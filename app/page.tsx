@@ -1,7 +1,7 @@
 // app/page.tsx - InkBook Opening Screen FULL VERSION
 'use client';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 const nameMap: Record<string, { chinese: string; pinyin: string; meaning: string }> = {
   crystal: { chinese: '克里丝托', pinyin: 'Kè lǐ sī tuō', meaning: 'Clear and brilliant, like crystal jade' },
@@ -26,9 +26,10 @@ export default function InkBookHome() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [nameInput, setNameInput] = useState('');
   const [result, setResult] = useState<{ chinese: string; pinyin: string; meaning: string } | null>(null);
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  const router = useRouter();
+  function toggleBook() {
     if (isAnimating) return;
     setIsAnimating(true);
     setIsOpen(prev => !prev);
@@ -91,30 +92,30 @@ export default function InkBookHome() {
         <div style={{ position:'relative', paddingLeft:'50px', paddingBottom:'70px' }}>
 
           {/* SPINE CHARM CHAIN */}
-          <div style={{ position:'absolute', left:'-50px', top:'20px', width:'40px', zIndex:30 }}>
-            <svg width="20" height="420" viewBox="0 0 20 420">
-              <line x1="10" y1="0" x2="10" y2="420" stroke="#C4A030" strokeWidth="1.5" strokeDasharray="4,3"/>
-              {[60,120,180,240,300,360].map(y => <ellipse key={y} cx="10" cy={y} rx="5" ry="3" fill="none" stroke="#C4A030" strokeWidth="1.5"/>)}
-              <line x1="10" y1="80" x2="2" y2="96" stroke="#C4A030" strokeWidth="1"/>
-              <circle cx="2" cy="106" r="11" fill="#D4AF37" stroke="#8B6010" strokeWidth="1"/>
-              <rect x="-3" y="101" width="10" height="10" fill="#B8952A"/>
-              <text x="2" y="110" fontFamily="serif" fontSize="9" fill="#4A2800" textAnchor="middle">福</text>
-              <line x1="10" y1="150" x2="3" y2="164" stroke="#C4A030" strokeWidth="1"/>
-              <line x1="3" y1="164" x2="3" y2="170" stroke="#8B4513" strokeWidth="2"/>
-              <ellipse cx="3" cy="184" rx="8" ry="12" fill="#CC0000" stroke="#880000" strokeWidth="1"/>
-              <text x="3" y="188" fontFamily="serif" fontSize="8" fill="#FFD700" textAnchor="middle">福</text>
-              <line x1="0" y1="196" x2="-2" y2="206" stroke="#D4AF37" strokeWidth="1"/>
-              <line x1="3" y1="196" x2="3" y2="207" stroke="#CC0000" strokeWidth="1"/>
-              <line x1="6" y1="196" x2="8" y2="206" stroke="#D4AF37" strokeWidth="1"/>
-              <line x1="10" y1="220" x2="3" y2="235" stroke="#C4A030" strokeWidth="1"/>
-              <ellipse cx="3" cy="245" rx="5" ry="7" fill="#2D8B50" stroke="#1A5A30" strokeWidth="1" opacity="0.9"/>
-              <ellipse cx="2" cy="243" rx="2" ry="2" fill="rgba(255,255,255,0.4)"/>
-              <line x1="10" y1="300" x2="3" y2="316" stroke="#C4A030" strokeWidth="1"/>
-              <circle cx="3" cy="324" r="5" fill="none" stroke="#C4A030" strokeWidth="1.5"/>
-              <circle cx="3" cy="324" r="2" fill="#C4A030"/>
-              <line x1="3" y1="329" x2="3" y2="345" stroke="#C4A030" strokeWidth="1.5"/>
-              <line x1="3" y1="337" x2="7" y2="341" stroke="#C4A030" strokeWidth="1.5"/>
-              <line x1="3" y1="342" x2="7" y2="346" stroke="#C4A030" strokeWidth="1.5"/>
+          <div style={{ position:'absolute', left:'-32px', top:'20px', width:'40px', zIndex:30 }}>
+            <svg width="40" height="420" viewBox="0 0 40 420">
+              <line x1="20" y1="0" x2="20" y2="420" stroke="#C4A030" strokeWidth="1.5" strokeDasharray="4,3"/>
+              {[60,120,180,240,300,360].map(y => <ellipse key={y} cx="20" cy={y} rx="5" ry="3" fill="none" stroke="#C4A030" strokeWidth="1.5"/>)}
+              <line x1="20" y1="80" x2="8" y2="96" stroke="#C4A030" strokeWidth="1"/>
+              <circle cx="8" cy="106" r="11" fill="#D4AF37" stroke="#8B6010" strokeWidth="1"/>
+              <rect x="3" y="101" width="10" height="10" fill="#B8952A"/>
+              <text x="8" y="110" fontFamily="serif" fontSize="9" fill="#4A2800" textAnchor="middle">福</text>
+              <line x1="20" y1="150" x2="10" y2="164" stroke="#C4A030" strokeWidth="1"/>
+              <line x1="10" y1="164" x2="10" y2="170" stroke="#8B4513" strokeWidth="2"/>
+              <ellipse cx="10" cy="184" rx="8" ry="12" fill="#CC0000" stroke="#880000" strokeWidth="1"/>
+              <text x="10" y="188" fontFamily="serif" fontSize="8" fill="#FFD700" textAnchor="middle">福</text>
+              <line x1="7" y1="196" x2="5" y2="206" stroke="#D4AF37" strokeWidth="1"/>
+              <line x1="10" y1="196" x2="10" y2="207" stroke="#CC0000" strokeWidth="1"/>
+              <line x1="13" y1="196" x2="15" y2="206" stroke="#D4AF37" strokeWidth="1"/>
+              <line x1="20" y1="220" x2="10" y2="235" stroke="#C4A030" strokeWidth="1"/>
+              <ellipse cx="10" cy="245" rx="5" ry="7" fill="#2D8B50" stroke="#1A5A30" strokeWidth="1" opacity="0.9"/>
+              <ellipse cx="9" cy="243" rx="2" ry="2" fill="rgba(255,255,255,0.4)"/>
+              <line x1="20" y1="300" x2="10" y2="316" stroke="#C4A030" strokeWidth="1"/>
+              <circle cx="10" cy="324" r="5" fill="none" stroke="#C4A030" strokeWidth="1.5"/>
+              <circle cx="10" cy="324" r="2" fill="#C4A030"/>
+              <line x1="10" y1="329" x2="10" y2="345" stroke="#C4A030" strokeWidth="1.5"/>
+              <line x1="10" y1="337" x2="14" y2="341" stroke="#C4A030" strokeWidth="1.5"/>
+              <line x1="10" y1="342" x2="14" y2="346" stroke="#C4A030" strokeWidth="1.5"/>
             </svg>
           </div>
 
@@ -172,10 +173,7 @@ export default function InkBookHome() {
                   {isLoading ? '✦ WRITING YOUR NAME... ✦' : '✦ GENERATE MY CHINESE NAME ✦'}
                 </button>
                 {result && (
-                  <button
-                    onClick={e => { e.stopPropagation(); router.push(`/dynasty?name=${encodeURIComponent(result.chinese)}`); }}
-                    style={{ background:'#D4AF37', color:'#3A2010', border:'none', padding:'8px 16px', fontFamily:"'Playfair Display',serif", fontSize:'9px', letterSpacing:'1.5px', cursor:'pointer', width:'100%', marginTop:'8px', fontWeight:700 }}
-                  >
+                  <button onClick={e => { e.stopPropagation(); router.push(`/dynasty?name=${encodeURIComponent(result.chinese)}`); }} style={{ background:'#D4AF37', color:'#3A2010', border:'none', padding:'8px 16px', fontFamily:"'Playfair Display',serif", fontSize:'9px', letterSpacing:'1.5px', cursor:'pointer', width:'100%', marginTop:'8px', fontWeight:700 }}>
                     Choose Your Dynasty →
                   </button>
                 )}
@@ -315,7 +313,7 @@ export default function InkBookHome() {
                 </div>
 
                 {/* Dumplings */}
-                <div style={{ position:'absolute', top:'120px', right:'16px', transform:'rotate(-8deg)', zIndex:4 }}>
+                <div style={{ position:'absolute', top:'20px', left:'16px', transform:'rotate(-8deg)', zIndex:4 }}>
                   <svg width="52" height="36" viewBox="0 0 52 36">
                     <ellipse cx="12" cy="22" rx="11" ry="8" fill="#FFF0DC" stroke="#D4A060" strokeWidth="1"/>
                     <path d="M2,22 C4,14 10,10 12,10 C14,10 20,14 22,22" fill="none" stroke="#D4A060" strokeWidth="1"/>
@@ -359,23 +357,23 @@ export default function InkBookHome() {
                 <div style={{ position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)', zIndex:5, display:'flex', flexDirection:'column', alignItems:'center', gap:'5px' }}>
                   <div style={{ display:'flex', gap:'4px' }}>
                     {[{ch:'墨',bg:'#F2C4CE'},{ch:'书',bg:'#FAD4A6'}].map(({ch,bg},i) => (
-                      <span key={i} style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', fontFamily:"'Noto Serif SC',serif", fontWeight:700, fontSize:'40px', padding:'5px 8px', background:bg, borderRadius:'2px', boxShadow:'1px 1px 3px rgba(0,0,0,0.2)', color:'#1A1A1A' }}>{ch}</span>
+                      <span key={i} style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', fontFamily:"'Noto Serif SC',serif", fontWeight:700, fontSize:'28px', padding:'4px 6px', background:bg, borderRadius:'2px', boxShadow:'1px 1px 3px rgba(0,0,0,0.2)', color:'#1A1A1A' }}>{ch}</span>
                     ))}
                   </div>
                   <div style={{ display:'flex', gap:'4px' }}>
                     {[{ch:'I',bg:'#F4A7B9',r:-3},{ch:'N',bg:'#FAD4A6',r:2},{ch:'K',bg:'#F2C4CE',r:-1}].map(({ch,bg,r},i) => (
-                      <span key={i} style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', fontFamily:"'Playfair Display',serif", fontWeight:700, fontSize:'28px', padding:'3px 7px', background:bg, borderRadius:'2px', boxShadow:'1px 1px 3px rgba(0,0,0,0.2)', transform:`rotate(${r}deg)`, color:'#1A1A1A' }}>{ch}</span>
+                      <span key={i} style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', fontFamily:"'Playfair Display',serif", fontWeight:700, fontSize:'45px', padding:'4px 6px', background:bg, borderRadius:'2px', boxShadow:'1px 1px 3px rgba(0,0,0,0.2)', transform:`rotate(${r}deg)`, color:'#1A1A1A' }}>{ch}</span>
                     ))}
                   </div>
                   <div style={{ display:'flex', gap:'4px' }}>
                     {[{ch:'B',bg:'#CC0000',c:'#FAD4A6',r:2},{ch:'O',bg:'#D4AF37',c:'#1A1A1A',r:-2},{ch:'O',bg:'#2D5016',c:'#FAD4A6',r:3},{ch:'K',bg:'#1B4B7A',c:'#FAD4A6',r:-1}].map(({ch,bg,c,r},i) => (
-                      <span key={i} style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', fontFamily:"'Playfair Display',serif", fontWeight:700, fontSize:'28px', padding:'3px 7px', background:bg, borderRadius:'2px', boxShadow:'1px 1px 3px rgba(0,0,0,0.2)', transform:`rotate(${r}deg)`, color:c }}>{ch}</span>
+                      <span key={i} style={{ display:'inline-flex', alignItems:'center', justifyContent:'center', fontFamily:"'Playfair Display',serif", fontWeight:700, fontSize:'35px', padding:'4px 6px', background:bg, borderRadius:'2px', boxShadow:'1px 1px 3px rgba(0,0,0,0.2)', transform:`rotate(${r}deg)`, color:c }}>{ch}</span>
                     ))}
                   </div>
                 </div>
 
                 {/* Red envelope */}
-                <div style={{ position:'absolute', bottom:'170px', left:'14px', transform:'rotate(-10deg)', zIndex:4, width:'50px', height:'36px', background:'linear-gradient(135deg,#CC0000,#880000)', borderRadius:'3px', display:'flex', alignItems:'center', justifyContent:'center', boxShadow:'2px 2px 6px rgba(0,0,0,0.3)' }}>
+                <div style={{ position:'absolute', bottom:'130px', left:'14px', transform:'rotate(-10deg)', zIndex:4, width:'50px', height:'36px', background:'linear-gradient(135deg,#CC0000,#880000)', borderRadius:'3px', display:'flex', alignItems:'center', justifyContent:'center', boxShadow:'2px 2px 6px rgba(0,0,0,0.3)' }}>
                   <span style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'20px', color:'#D4AF37' }}>福</span>
                 </div>
 
@@ -481,7 +479,7 @@ export default function InkBookHome() {
 
             {/* BOTTOM CHARM CHAIN */}
             <div style={{ position:'absolute', bottom:'-65px', left:'10px', right:'10px', zIndex:30 }}>
-              <svg width="300" height="60" viewBox="0 0 300 60">
+              <svg width="300" height="70" viewBox="0 0 300 70">
                 <line x1="0" y1="8" x2="300" y2="8" stroke="#C4A030" strokeWidth="1.5" strokeDasharray="4,3"/>
                 {[40,90,140,190,240].map(x => <ellipse key={x} cx={x} cy="8" rx="3" ry="5" fill="none" stroke="#C4A030" strokeWidth="1.5"/>)}
                 <line x1="30" y1="8" x2="30" y2="18" stroke="#C4A030" strokeWidth="1"/>
