@@ -89,7 +89,7 @@ export default function InkBookHome() {
         </div>
 
         {/* BOOK WRAPPER */}
-        <div style={{ position:'relative', paddingLeft:'20px', paddingBottom:'80px' }}>
+        <div style={{ position:'relative' }}>
 
           {/* SPINE CHARM CHAIN */}
           <div style={{ position:'absolute', left:'-28px', top:'20px', width:'20px', zIndex:30 }}>
