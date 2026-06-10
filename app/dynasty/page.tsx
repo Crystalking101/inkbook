@@ -1,0 +1,77 @@
+// app/dynasty/page.tsx - Dynasty Selector Screen
+'use client';
+import { useState, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+const dynasties = [
+  { id:'tang', name:'Tang Dynasty', chinese:'唐朝', tone:'Tone 1', toneChar:'mā', description:'Calm and steady, like a court lady reading poetry at dawn.', bg:'linear-gradient(145deg,#F2C4CE,#F4A7B9,#E8869A)', accent:'#8B0000', text:'#5A1A2A', period:'618–907 AD' },
+  { id:'han', name:'Han Dynasty', chinese:'汉朝', tone:'Tone 2', toneChar:'má', description:'Rising with power, like an empress defending her throne.', bg:'linear-gradient(145deg,#8B0000,#CC0000,#A00000)', accent:'#D4AF37', text:'#FFE8D0', period:'206 BC–220 AD' },
+  { id:'ming', name:'Ming Dynasty', chinese:'明朝', tone:'Tone 3', toneChar:'mǎ', description:'Dipping then rising, like a secret whispered by candlelight.', bg:'linear-gradient(145deg,#1A2A1A,#2D5016,#1E3A10)', accent:'#D4AF37', text:'#D4E8D0', period:'1368–1644 AD' },
+  { id:'qing', name:'Qing Dynasty', chinese:'清朝', tone:'Tone 4', toneChar:'mà', description:'Falling with authority, like a royal decree from the empress.', bg:'linear-gradient(145deg,#1B4B7A,#2A6BAA,#163A62)', accent:'#D4AF37', text:'#D0E4FF', period:'1644–1912 AD' },
+];
+
+function DynastyContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const chineseName = searchParams.get('name') || '美丽';
+  const [selected, setSelected] = useState<string | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+
+  function selectDynasty(id: string) {
+    setSelected(id);
+    setTimeout(() => { router.push(`/tones?dynasty=${id}&name=${encodeURIComponent(chineseName)}`); }, 600);
+  }
+
+  return (
+    <>
+      <style suppressHydrationWarning>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+SC:wght@400;700&display=swap');
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Playfair Display',serif; }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+        .c1 { animation: fadeUp 0.5s ease 0.1s forwards; opacity:0; }
+        .c2 { animation: fadeUp 0.5s ease 0.2s forwards; opacity:0; }
+        .c3 { animation: fadeUp 0.5s ease 0.3s forwards; opacity:0; }
+        .c4 { animation: fadeUp 0.5s ease 0.4s forwards; opacity:0; }
+      `}</style>
+      <div style={{ width:'100%', minHeight:'100vh', background:'#FFF8F0', backgroundImage:'repeating-linear-gradient(0deg,transparent,transparent 27px,rgba(139,0,0,0.06) 27px,rgba(139,0,0,0.06) 28px)', display:'flex', flexDirection:'column', alignItems:'center', padding:'40px 20px 60px' }}>
+        <div style={{ textAlign:'center', marginBottom:'32px' }}>
+          <span style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'13px', color:'rgba(139,0,0,0.5)', letterSpacing:'4px', display:'block', marginBottom:'8px' }}>欢迎，{chineseName}</span>
+          <h1 style={{ fontFamily:"'Playfair Display',serif", fontSize:'28px', color:'#8B0000', fontWeight:700, marginBottom:'8px' }}>Choose Your Dynasty</h1>
+          <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'12px', color:'rgba(90,58,26,0.6)', fontStyle:'italic', lineHeight:1.6 }}>Each dynasty unlocks a different tone.<br/>Your journey begins with your choice.</p>
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(2,1fr)', gap:'16px', width:'100%', maxWidth:'480px' }}>
+          {dynasties.map((d, i) => (
+            <div key={d.id} className={`c${i+1}`} onClick={() => selectDynasty(d.id)} onMouseEnter={() => setHoveredId(d.id)} onMouseLeave={() => setHoveredId(null)}
+              style={{ background:d.bg, borderRadius:'8px', padding:'20px 16px', cursor:'pointer', transition:'transform 0.2s ease, box-shadow 0.2s ease', transform: selected===d.id ? 'scale(1.05)' : hoveredId===d.id ? 'scale(1.02)' : 'scale(1)', boxShadow: selected===d.id ? '0 8px 30px rgba(0,0,0,0.3)' : hoveredId===d.id ? '0 6px 20px rgba(0,0,0,0.2)' : '0 3px 12px rgba(0,0,0,0.15)', position:'relative', overflow:'hidden', border: selected===d.id ? `2px solid ${d.accent}` : '2px solid transparent' }}>
+              <div style={{ position:'absolute', inset:0, backgroundImage:'repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(255,255,255,0.03) 8px,rgba(255,255,255,0.03) 9px)', pointerEvents:'none' }}/>
+              <div style={{ position:'absolute', top:'10px', right:'10px', background:'rgba(0,0,0,0.25)', borderRadius:'20px', padding:'2px 8px' }}>
+                <span style={{ fontFamily:"'Playfair Display',serif", fontSize:'9px', color:d.accent, letterSpacing:'1px' }}>{d.tone}</span>
+              </div>
+              <div style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'32px', color:d.accent, marginBottom:'6px', fontWeight:700, lineHeight:1 }}>{d.chinese}</div>
+              <div style={{ fontFamily:"'Playfair Display',serif", fontSize:'14px', color:d.text, fontWeight:700, marginBottom:'4px' }}>{d.name}</div>
+              <div style={{ fontFamily:"'Playfair Display',serif", fontSize:'9px', color:d.text, opacity:0.6, marginBottom:'10px' }}>{d.period}</div>
+              <div style={{ background:'rgba(0,0,0,0.2)', borderRadius:'4px', padding:'6px 10px', marginBottom:'10px', display:'inline-block' }}>
+                <span style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'20px', color:d.accent, letterSpacing:'3px' }}>{d.toneChar}</span>
+              </div>
+              <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'10px', color:d.text, fontStyle:'italic', lineHeight:1.6, marginBottom:'14px', opacity:0.85 }}>{d.description}</p>
+              <div style={{ background:d.accent, padding:'7px 14px', borderRadius:'3px', fontFamily:"'Playfair Display',serif", fontSize:'9px', letterSpacing:'1.5px', textAlign:'center', color:'#1A1A1A' }}>
+                {selected===d.id ? '✦ ENTERING DYNASTY... ✦' : 'SELECT THIS DYNASTY'}
+              </div>
+            </div>
+          ))}
+        </div>
+        <p style={{ marginTop:'32px', fontFamily:"'Playfair Display',serif", fontSize:'11px', color:'rgba(139,0,0,0.4)', fontStyle:'italic', letterSpacing:'1px', textAlign:'center' }}>Your dynasty shapes your learning journey</p>
+        <button onClick={() => router.back()} style={{ marginTop:'16px', background:'transparent', border:'none', fontFamily:"'Playfair Display',serif", fontSize:'10px', color:'rgba(139,0,0,0.4)', cursor:'pointer', fontStyle:'italic', letterSpacing:'1px' }}>← back to your name</button>
+      </div>
+    </>
+  );
+}
+
+export default function DynastyPage() {
+  return (
+    <Suspense fallback={<div style={{display:'flex',alignItems:'center',justifyContent:'center',minHeight:'100vh',fontFamily:'serif',color:'#8B0000',fontSize:'14px',letterSpacing:'2px'}}>Loading...</div>}>
+      <DynastyContent />
+    </Suspense>
+  );
+}

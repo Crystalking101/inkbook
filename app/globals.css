@@ -1,0 +1,102 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #faf9f7;
+  --foreground: #1a1a1a;
+  --font-playfair: "Playfair Display", serif;
+  --font-jakarta: "Plus Jakarta Sans", sans-serif;
+  --font-noto-serif-sc: "Noto Serif SC", serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-jakarta);
+  letter-spacing: 0.3px;
+}
+
+/* Dynasty Aesthetic Base Styles */
+@layer components {
+  .dynast-page {
+    @apply rounded-sm shadow-paper;
+  }
+
+  .journal-line {
+    @apply border-b-2 border-tang-gold/30 pb-2;
+  }
+
+  .torn-edge {
+    @apply rounded-none shadow-paper;
+    border-radius: 2px 8px 3px 7px;
+  }
+
+  .ink-stamp {
+    @apply font-bold text-white uppercase tracking-widest cursor-pointer
+      transition-all duration-200 hover:scale-105 active:scale-95;
+    text-shadow: 1px 1px 2px rgba(139, 0, 0, 0.2);
+  }
+
+  .text-ransom {
+    @apply font-playfair text-base leading-none tracking-tighter;
+  }
+
+  .heading-playfair {
+    @apply font-playfair font-semibold tracking-wide;
+  }
+
+  .chinese-char {
+    @apply font-noto-serif-sc font-bold;
+  }
+}
+
+/* Smooth animations */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes brushWrite {
+    0% {
+      opacity: 0;
+      transform: scaleX(0.8) scaleY(0.8);
+    }
+    70% {
+      opacity: 1;
+      transform: scaleX(1.1) scaleY(1.1);
+    }
+    100% {
+      opacity: 1;
+      transform: scaleX(1) scaleY(1);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  .animate-brush-write {
+    animation: brushWrite 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+}
+
