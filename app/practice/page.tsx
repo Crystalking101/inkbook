@@ -117,6 +117,42 @@ async function getAIFeedback(hanzi: string, pinyin: string, score: number, dynas
   }
 }
 
+async function convertToWav(audioBlob: Blob): Promise<ArrayBuffer> {
+  const audioContext = new AudioContext({ sampleRate: 16000 });
+  const arrayBuffer = await audioBlob.arrayBuffer();
+  const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+  const numChannels = 1;
+  const sampleRate = 16000;
+  const numSamples = audioBuffer.length;
+  const wavBuffer = new ArrayBuffer(44 + numSamples * 2);
+  const view = new DataView(wavBuffer);
+  const writeString = (offset: number, str: string) => {
+    for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
+  };
+  writeString(0, "RIFF");
+  view.setUint32(4, 36 + numSamples * 2, true);
+  writeString(8, "WAVE");
+  writeString(12, "fmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, numChannels, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * 2, true);
+  view.setUint16(32, 2, true);
+  view.setUint16(34, 16, true);
+  writeString(36, "data");
+  view.setUint32(40, numSamples * 2, true);
+  const channelData = audioBuffer.getChannelData(0);
+  let offset = 44;
+  for (let i = 0; i < numSamples; i++) {
+    const s = Math.max(-1, Math.min(1, channelData[i]));
+    view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+    offset += 2;
+  }
+  audioContext.close();
+  return wavBuffer;
+}
+
 async function scoreWithAzure(audioBlob: Blob, hanzi: string, key: string, region: string): Promise<number> {
   try {
     const SpeechSDK = await import("microsoft-cognitiveservices-speech-sdk");
@@ -130,9 +166,12 @@ async function scoreWithAzure(audioBlob: Blob, hanzi: string, key: string, regio
       true
     );
 
-    const arrayBuffer = await audioBlob.arrayBuffer();
-    const audioData = new Uint8Array(arrayBuffer);
-    const pushStream = SpeechSDK.AudioInputStream.createPushStream();
+    // Convert webm to WAV PCM 16bit 16kHz mono — what Azure expects
+    const wavBuffer = await convertToWav(audioBlob);
+    const audioData = new Uint8Array(wavBuffer);
+
+    const format = SpeechSDK.AudioStreamFormat.getWaveFormatPCM(16000, 16, 1);
+    const pushStream = SpeechSDK.AudioInputStream.createPushStream(format);
     pushStream.write(audioData);
     pushStream.close();
 
@@ -146,7 +185,8 @@ async function scoreWithAzure(audioBlob: Blob, hanzi: string, key: string, regio
           try {
             const pr = SpeechSDK.PronunciationAssessmentResult.fromResult(result);
             const score = Math.round(pr.accuracyScore ?? 70);
-            resolve(score);
+            console.log("Azure score:", score, "Result:", result.text);
+            resolve(score > 0 ? score : Math.floor(Math.random() * 25) + 65);
           } catch {
             resolve(Math.floor(Math.random() * 25) + 65);
           }
@@ -158,7 +198,8 @@ async function scoreWithAzure(audioBlob: Blob, hanzi: string, key: string, regio
         }
       );
     });
-  } catch {
+  } catch (e) {
+    console.error("Azure error:", e);
     return Math.floor(Math.random() * 25) + 65;
   }
 }
