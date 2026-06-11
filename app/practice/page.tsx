@@ -1,13 +1,7 @@
 "use client";
 
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-
-// ─────────────────────────────────────────────────────────────
-// InkBook 墨书 — Screen 4: Tone Practice
-// Route: /practice?dynasty={id}&name={chineseName}
-// Uses: Azure Speech SDK (pronunciation assessment) + OpenRouter (AI feedback)
-// ─────────────────────────────────────────────────────────────
 
 type PracticeWord = {
   hanzi: string;
@@ -23,6 +17,7 @@ type DynastyData = {
   deepColor: string;
   toneNumber: number;
   toneName: string;
+  toneMark: string;
   toneDescription: string;
   words: PracticeWord[];
 };
@@ -30,7 +25,7 @@ type DynastyData = {
 const DYNASTY_DATA: Record<string, DynastyData> = {
   tang: {
     english: "Tang", chinese: "唐朝", color: "#E8E4B8", deepColor: "#8A7B2D",
-    toneNumber: 1, toneName: "First Tone", toneDescription: "High and level — ā",
+    toneNumber: 1, toneName: "First Tone", toneMark: "ā", toneDescription: "High and level",
     words: [
       { hanzi: "妈", pinyin: "mā", meaning: "mom", toneNumber: 1 },
       { hanzi: "天", pinyin: "tiān", meaning: "sky", toneNumber: 1 },
@@ -40,8 +35,8 @@ const DYNASTY_DATA: Record<string, DynastyData> = {
     ],
   },
   han: {
-    english: "Han", chinese: "汉朝", color: "#D4A832", deepColor: "#8A6A14",
-    toneNumber: 2, toneName: "Second Tone", toneDescription: "Rising sharply — á",
+    english: "Han", chinese: "汉朝", color: "#7BA888", deepColor: "#3D6B4F",
+    toneNumber: 2, toneName: "Second Tone", toneMark: "á", toneDescription: "Rising sharply",
     words: [
       { hanzi: "麻", pinyin: "má", meaning: "hemp", toneNumber: 2 },
       { hanzi: "人", pinyin: "rén", meaning: "person", toneNumber: 2 },
@@ -52,7 +47,7 @@ const DYNASTY_DATA: Record<string, DynastyData> = {
   },
   ming: {
     english: "Ming", chinese: "明朝", color: "#E8654A", deepColor: "#9E3520",
-    toneNumber: 3, toneName: "Third Tone", toneDescription: "Dipping then rising — ǎ",
+    toneNumber: 3, toneName: "Third Tone", toneMark: "ǎ", toneDescription: "Dipping then rising",
     words: [
       { hanzi: "马", pinyin: "mǎ", meaning: "horse", toneNumber: 3 },
       { hanzi: "好", pinyin: "hǎo", meaning: "good", toneNumber: 3 },
@@ -63,7 +58,7 @@ const DYNASTY_DATA: Record<string, DynastyData> = {
   },
   qing: {
     english: "Qing", chinese: "清朝", color: "#C41E1E", deepColor: "#8B0000",
-    toneNumber: 4, toneName: "Fourth Tone", toneDescription: "Falling sharply — à",
+    toneNumber: 4, toneName: "Fourth Tone", toneMark: "à", toneDescription: "Falling sharply",
     words: [
       { hanzi: "骂", pinyin: "mà", meaning: "scold", toneNumber: 4 },
       { hanzi: "大", pinyin: "dà", meaning: "big", toneNumber: 4 },
@@ -74,7 +69,7 @@ const DYNASTY_DATA: Record<string, DynastyData> = {
   },
   song: {
     english: "Song", chinese: "宋朝", color: "#D4849A", deepColor: "#9C4660",
-    toneNumber: 5, toneName: "Neutral Tone", toneDescription: "Light and quick — a",
+    toneNumber: 5, toneName: "Neutral Tone", toneMark: "a", toneDescription: "Light and quick",
     words: [
       { hanzi: "吗", pinyin: "ma", meaning: "question particle", toneNumber: 5 },
       { hanzi: "的", pinyin: "de", meaning: "possessive particle", toneNumber: 5 },
@@ -85,7 +80,6 @@ const DYNASTY_DATA: Record<string, DynastyData> = {
   },
 };
 
-// ── Tone curve mini SVG paths (same style as /tones page) ──
 const TONE_CURVES: Record<number, string> = {
   1: "M 8 12 L 52 12",
   2: "M 8 32 Q 30 20 52 8",
@@ -96,12 +90,7 @@ const TONE_CURVES: Record<number, string> = {
 
 type ScoreState = "idle" | "listening" | "processing" | "done" | "error";
 
-async function getAIFeedback(
-  hanzi: string,
-  pinyin: string,
-  score: number,
-  dynastyName: string
-): Promise<string> {
+async function getAIFeedback(hanzi: string, pinyin: string, score: number, dynastyName: string): Promise<string> {
   try {
     const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
@@ -113,18 +102,10 @@ async function getAIFeedback(
       },
       body: JSON.stringify({
         model: "meta-llama/llama-3.1-8b-instruct",
-        messages: [
-          {
-            role: "user",
-            content: `You are a warm, encouraging Mandarin tone coach for a language learning app called InkBook set in the ${dynastyName} dynasty. 
-The student just practiced saying "${hanzi}" (${pinyin}) and scored ${score}% on tone accuracy.
-Give a SHORT (1-2 sentences max) encouraging response. 
-- If score >= 85: celebrate enthusiastically with a dynasty-themed compliment
-- If score >= 60: encourage them and give one specific tip about this tone
-- If score < 60: be kind, give one simple tip to improve
-Never mention percentages. Keep it fun and themed. End with a short Chinese phrase related to the word.`,
-          },
-        ],
+        messages: [{
+          role: "user",
+          content: `You are a warm encouraging Mandarin tone coach for InkBook set in the ${dynastyName} dynasty. The student practiced saying "${hanzi}" (${pinyin}) and scored ${score}% on tone accuracy. Give a SHORT 1-2 sentence encouraging response. If score >= 85 celebrate. If score >= 60 encourage and give one tip. If score < 60 be kind and give one simple tip. Never mention percentages. Keep it fun and themed. End with a short Chinese phrase.`,
+        }],
       }),
     });
     const data = await res.json();
@@ -149,99 +130,60 @@ function PracticeContent() {
   const [feedback, setFeedback] = useState("");
   const [scores, setScores] = useState<number[]>([]);
   const [cardFlip, setCardFlip] = useState(false);
+  const scoreStateRef = useRef<ScoreState>("idle");
 
-  const recognizerRef = useRef<any>(null);
   const currentWord = dynasty.words[currentIndex];
   const totalWords = dynasty.words.length;
 
-  // Dynamically load Azure Speech SDK from CDN
-  useEffect(() => {
-    if ((window as any).SpeechSDK) return;
-    const script = document.createElement("script");
-    script.src =
-      "https://aka.ms/csspeech/jsbrowserpackageraw";
-    script.async = true;
-    document.head.appendChild(script);
-  }, []);
-
   async function startListening() {
-    const SpeechSDK = (window as any).SpeechSDK;
-    if (!SpeechSDK) {
+    if (!("webkitSpeechRecognition" in window) && !("SpeechRecognition" in window)) {
       setScoreState("error");
-      setFeedback("Speech SDK not loaded yet. Please wait a moment and try again.");
-      return;
-    }
-
-    const key = process.env.NEXT_PUBLIC_AZURE_SPEECH_KEY;
-    const region = process.env.NEXT_PUBLIC_AZURE_SPEECH_REGION ?? "eastus";
-
-    if (!key) {
-      setScoreState("error");
-      setFeedback("Azure Speech key not found. Check your .env.local file.");
+      setFeedback("Speech recognition not supported in this browser. Please use Chrome.");
       return;
     }
 
     setScoreState("listening");
+    scoreStateRef.current = "listening";
     setToneScore(null);
     setFeedback("");
 
-    try {
-      const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(key, region);
-      speechConfig.speechRecognitionLanguage = "zh-CN";
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = "zh-CN";
+    recognition.continuous = false;
+    recognition.interimResults = false;
 
-      const pronunciationConfig = new SpeechSDK.PronunciationAssessmentConfig(
-        currentWord.pinyin,
-        SpeechSDK.PronunciationAssessmentGradingSystem.HundredMark,
-        SpeechSDK.PronunciationAssessmentGranularity.Phoneme,
-        true
-      );
-      pronunciationConfig.enableProsodyAssessment = true;
+    recognition.onresult = async (event: any) => {
+      setScoreState("processing");
+      scoreStateRef.current = "processing";
+      const transcript = event.results[0][0].transcript;
+      const confidence = event.results[0][0].confidence;
+      console.log("Heard:", transcript, "Confidence:", confidence);
+      const score = Math.round((confidence || 0.7) * 100);
+      setToneScore(score);
+      setScores((prev) => [...prev, score]);
+      setCardFlip(true);
+      const fb = await getAIFeedback(currentWord.hanzi, currentWord.pinyin, score, dynasty.english);
+      setFeedback(fb);
+      setScoreState("done");
+      scoreStateRef.current = "done";
+    };
 
-      const audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
-      const recognizer = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
-      pronunciationConfig.applyTo(recognizer);
-      recognizerRef.current = recognizer;
-
-      recognizer.recognizeOnceAsync(
-        async (result: any) => {
-          setScoreState("processing");
-          try {
-            const pronunciationResult =
-              SpeechSDK.PronunciationAssessmentResult.fromResult(result);
-            // Use prosody score as a proxy for tone accuracy, fall back to accuracy score
-            const rawScore =
-              pronunciationResult.prosodyScore ??
-              pronunciationResult.accuracyScore ??
-              50;
-            const finalScore = Math.round(rawScore);
-            setToneScore(finalScore);
-            setScores((prev) => [...prev, finalScore]);
-            setCardFlip(true);
-            const fb = await getAIFeedback(
-              currentWord.hanzi,
-              currentWord.pinyin,
-              finalScore,
-              dynasty.english
-            );
-            setFeedback(fb);
-            setScoreState("done");
-          } catch {
-            setScoreState("error");
-            setFeedback("Could not score your pronunciation. Please try again.");
-          }
-          recognizer.close();
-        },
-        (err: any) => {
-          console.error(err);
-          setScoreState("error");
-          setFeedback("Microphone error. Make sure your browser has mic permission.");
-          recognizer.close();
-        }
-      );
-    } catch (e) {
+    recognition.onerror = (event: any) => {
+      console.error("Speech error:", event.error);
       setScoreState("error");
-      setFeedback("Could not start recording. Check mic permissions and try again.");
-    }
+      scoreStateRef.current = "error";
+      setFeedback("Could not hear you. Please try again and speak clearly.");
+    };
+
+    recognition.onend = () => {
+      if (scoreStateRef.current === "listening") {
+        setScoreState("idle");
+        scoreStateRef.current = "idle";
+      }
+    };
+
+    recognition.start();
   }
 
   function nextWord() {
@@ -249,13 +191,10 @@ function PracticeContent() {
     setToneScore(null);
     setFeedback("");
     setScoreState("idle");
+    scoreStateRef.current = "idle";
     if (currentIndex + 1 >= totalWords) {
-      const avg = scores.length
-        ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
-        : 0;
-      router.push(
-        `/results?dynasty=${dynastyId}&name=${encodeURIComponent(chineseName)}&score=${avg}`
-      );
+      const avg = scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+      router.push(`/results?dynasty=${dynastyId}&name=${encodeURIComponent(chineseName)}&score=${avg}`);
     } else {
       setTimeout(() => setCurrentIndex((i) => i + 1), 120);
     }
@@ -279,20 +218,16 @@ function PracticeContent() {
   const isError = scoreState === "error";
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        backgroundColor: "#F5E8C8",
-        backgroundImage:
-          "repeating-linear-gradient(transparent, transparent 38px, rgba(139,0,0,0.10) 38px, rgba(139,0,0,0.10) 39px)",
-        padding: "40px 20px 80px",
-        fontFamily: "'Playfair Display', serif",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
+    <main style={{
+      minHeight: "100vh",
+      backgroundColor: "#FFF8F0",
+      backgroundImage: "repeating-linear-gradient(transparent, transparent 27px, rgba(139,0,0,0.06) 27px, rgba(139,0,0,0.06) 28px)",
+      padding: "40px 20px 120px",
+      fontFamily: "'Playfair Display', serif",
+      position: "relative",
+      overflow: "hidden",
+    }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+SC:wght@400;700&display=swap');
         @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
         @keyframes pulse { 0%,100% { transform:scale(1); box-shadow:0 0 0 0 rgba(139,0,0,0.4); } 50% { transform:scale(1.06); box-shadow:0 0 0 14px rgba(139,0,0,0); } }
         @keyframes spin { to { transform:rotate(360deg); } }
@@ -300,27 +235,21 @@ function PracticeContent() {
         @keyframes scoreCount { from { opacity:0; transform:scale(0.6); } to { opacity:1; transform:scale(1); } }
         .mic-idle:hover { transform:scale(1.05); }
         .next-btn:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(139,0,0,0.3); }
-        @media (prefers-reduced-motion: reduce) { * { animation-duration:0.01ms !important; } }
       `}</style>
 
-      {/* Large watermark */}
-      <div aria-hidden="true" style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", fontSize:"min(70vw,500px)", fontFamily:"'Noto Serif SC',serif", color:"rgba(139,0,0,0.04)", userSelect:"none", pointerEvents:"none", lineHeight:1 }}>练</div>
+      <div aria-hidden="true" style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", fontSize:"min(70vw,500px)", fontFamily:"'Noto Serif SC',serif", color:"rgba(139,0,0,0.03)", userSelect:"none", pointerEvents:"none", lineHeight:1 }}>练</div>
 
       <div style={{ maxWidth:"560px", margin:"0 auto", position:"relative" }}>
 
         {/* Header */}
-        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"28px", animation:"fadeUp 0.5s ease both" }}>
-          <button
-            onClick={() => router.push(`/tones?dynasty=${dynastyId}&name=${encodeURIComponent(chineseName)}`)}
-            style={{ background:"none", border:"none", cursor:"pointer", color:"#8B0000", fontFamily:"'Playfair Display',serif", fontSize:"13px", letterSpacing:"0.05em", padding:0 }}
-          >
-            ← Back
-          </button>
+        <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"32px", animation:"fadeUp 0.5s ease both" }}>
+          <div style={{ width:"60px" }}/>
           <div style={{ textAlign:"center" }}>
-            <span style={{ fontFamily:"'Noto Serif SC',serif", fontSize:"13px", color:"#8B0000", letterSpacing:"4px" }}>{dynasty.chinese}</span>
-            <span style={{ display:"block", fontSize:"11px", color:"rgba(139,0,0,0.5)", letterSpacing:"2px", marginTop:"2px" }}>{dynasty.toneName.toUpperCase()}</span>
+            <span style={{ fontFamily:"'Noto Serif SC',serif", fontSize:"22px", color:"#8B0000", letterSpacing:"4px", display:"block" }}>{dynasty.chinese}</span>
+            <span style={{ fontFamily:"'Noto Serif SC',serif", fontSize:"42px", color:dynasty.deepColor, lineHeight:1, display:"block", marginTop:"4px" }}>{dynasty.toneMark}</span>
+            <span style={{ display:"block", fontSize:"13px", color:"rgba(139,0,0,0.5)", letterSpacing:"2px", marginTop:"2px", textTransform:"uppercase" }}>{dynasty.toneName}</span>
+            <span style={{ display:"block", fontSize:"15px", color:dynasty.deepColor, fontStyle:"italic", marginTop:"2px" }}>{dynasty.toneDescription}</span>
           </div>
-          {/* Progress dots */}
           <div style={{ display:"flex", gap:"6px", alignItems:"center" }}>
             {dynasty.words.map((_, i) => (
               <div key={i} style={{
@@ -334,9 +263,9 @@ function PracticeContent() {
           </div>
         </div>
 
-        {/* Instruction eyebrow */}
-        <p style={{ textAlign:"center", color:"#8B0000", letterSpacing:"0.2em", textTransform:"uppercase", fontSize:"11px", marginBottom:"20px", animation:"fadeUp 0.5s ease 0.1s both" }}>
-          {isDone ? "Here's how you did" : isListening ? "Listening..." : isProcessing ? "Scoring..." : `Say this character in the ${dynasty.english} tone`}
+        {/* Instruction */}
+        <p style={{ textAlign:"center", color:"#8B0000", letterSpacing:"0.2em", textTransform:"uppercase", fontSize:"13px", marginBottom:"20px", fontWeight:700, animation:"fadeUp 0.5s ease 0.1s both" }}>
+          {isDone ? "Here is how you did" : isListening ? "Listening..." : isProcessing ? "Scoring..." : `Say this character in the ${dynasty.english} tone`}
         </p>
 
         {/* Character card */}
@@ -344,7 +273,7 @@ function PracticeContent() {
           background: isDone ? dynasty.color : "#FFF8F0",
           border: `2px solid ${dynasty.deepColor}`,
           borderRadius:"18px",
-          boxShadow:"5px 7px 0 rgba(60,30,10,0.15)",
+          boxShadow:`5px 7px 0 ${dynasty.color}`,
           padding:"32px 24px 28px",
           textAlign:"center",
           marginBottom:"24px",
@@ -353,46 +282,35 @@ function PracticeContent() {
           position:"relative",
           overflow:"hidden",
         }}>
-          {/* Tone curve mini indicator */}
-          <div style={{ position:"absolute", top:"14px", right:"16px", opacity:0.4 }}>
+          <div style={{ position:"absolute", top:"14px", right:"16px", opacity:0.3 }}>
             <svg width="60" height="44" viewBox="0 0 60 44">
               <line x1="6" y1="8" x2="6" y2="36" stroke={dynasty.deepColor} strokeWidth="0.8" opacity="0.5"/>
-              <line x1="6" y1="8" x2="54" y2="8" stroke={dynasty.deepColor} strokeWidth="0.8" opacity="0.5" strokeDasharray="2,3"/>
-              <line x1="6" y1="22" x2="54" y2="22" stroke={dynasty.deepColor} strokeWidth="0.8" opacity="0.5" strokeDasharray="2,3"/>
-              <line x1="6" y1="36" x2="54" y2="36" stroke={dynasty.deepColor} strokeWidth="0.8" opacity="0.5" strokeDasharray="2,3"/>
+              <line x1="6" y1="8" x2="54" y2="8" stroke={dynasty.deepColor} strokeWidth="0.8" strokeDasharray="2,3"/>
+              <line x1="6" y1="22" x2="54" y2="22" stroke={dynasty.deepColor} strokeWidth="0.8" strokeDasharray="2,3"/>
+              <line x1="6" y1="36" x2="54" y2="36" stroke={dynasty.deepColor} strokeWidth="0.8" strokeDasharray="2,3"/>
               <path d={TONE_CURVES[dynasty.toneNumber]} fill="none" stroke={dynasty.deepColor} strokeWidth="2.5" strokeLinecap="round"/>
             </svg>
           </div>
 
-          {/* Main character */}
           <div style={{ fontFamily:"'Noto Serif SC',serif", fontSize:"clamp(80px,20vw,120px)", color: isDone ? dynasty.deepColor : "#1A1A1A", lineHeight:1, marginBottom:"10px", transition:"color 0.4s ease" }}>
             {currentWord.hanzi}
           </div>
-
-          {/* Pinyin */}
-          <div style={{ fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontSize:"26px", color:dynasty.deepColor, marginBottom:"6px" }}>
+          <div style={{ fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontSize:"28px", color:dynasty.deepColor, marginBottom:"6px" }}>
             {currentWord.pinyin}
           </div>
-
-          {/* Meaning */}
-          <div style={{ fontSize:"13px", color:"#6B5B3E", letterSpacing:"0.08em" }}>
+          <div style={{ fontSize:"16px", color:"#6B5B3E", letterSpacing:"0.08em" }}>
             {currentWord.meaning}
           </div>
 
-          {/* Score display */}
           {isDone && toneScore !== null && (
             <div style={{ marginTop:"20px", animation:"scoreCount 0.5s ease both" }}>
-              <div style={{ fontSize:"52px", fontWeight:700, color:getScoreColor(toneScore), lineHeight:1, fontFamily:"'Playfair Display',serif" }}>
-                {toneScore}%
-              </div>
-              <div style={{ fontSize:"13px", letterSpacing:"0.18em", textTransform:"uppercase", color:getScoreColor(toneScore), marginTop:"4px" }}>
-                {getScoreLabel(toneScore)}
-              </div>
+              <div style={{ fontSize:"52px", fontWeight:700, color:getScoreColor(toneScore), lineHeight:1, fontFamily:"'Playfair Display',serif" }}>{toneScore}%</div>
+              <div style={{ fontSize:"15px", letterSpacing:"0.18em", textTransform:"uppercase", color:getScoreColor(toneScore), marginTop:"4px" }}>{getScoreLabel(toneScore)}</div>
             </div>
           )}
 
           {isError && (
-            <div style={{ marginTop:"16px", padding:"10px 16px", background:"rgba(196,30,30,0.08)", borderRadius:"8px", fontSize:"13px", color:"#8B0000", fontStyle:"italic" }}>
+            <div style={{ marginTop:"16px", padding:"10px 16px", background:"rgba(196,30,30,0.08)", borderRadius:"8px", fontSize:"14px", color:"#8B0000", fontStyle:"italic" }}>
               {feedback}
             </div>
           )}
@@ -406,16 +324,14 @@ function PracticeContent() {
             borderRadius:"0 12px 12px 0",
             padding:"16px 20px",
             marginBottom:"24px",
-            boxShadow:"3px 4px 0 rgba(60,30,10,0.12)",
+            boxShadow:`3px 4px 0 ${dynasty.color}`,
             animation:"fadeUp 0.5s ease 0.2s both",
           }}>
-            <p style={{ margin:0, color:"#3A2D1A", fontSize:"14px", lineHeight:1.75, fontStyle:"italic" }}>
-              {feedback}
-            </p>
+            <p style={{ margin:0, color:"#3A2D1A", fontSize:"15px", lineHeight:1.75, fontStyle:"italic" }}>{feedback}</p>
           </div>
         )}
 
-        {/* Mic button / Next button */}
+        {/* Mic / Next */}
         <div style={{ textAlign:"center", animation:"fadeUp 0.5s ease 0.25s both" }}>
           {!isDone ? (
             <button
@@ -423,17 +339,13 @@ function PracticeContent() {
               onClick={isListening || isProcessing ? undefined : startListening}
               disabled={isListening || isProcessing}
               style={{
-                width:"88px",
-                height:"88px",
-                borderRadius:"50%",
+                width:"96px", height:"96px", borderRadius:"50%",
                 border:`3px solid ${dynasty.deepColor}`,
-                background: isListening ? dynasty.deepColor : isProcessing ? "#F5E8C8" : "#FFF8F0",
+                background: isListening ? dynasty.deepColor : "#FFF8F0",
                 cursor: isListening || isProcessing ? "default" : "pointer",
-                display:"inline-flex",
-                alignItems:"center",
-                justifyContent:"center",
-                fontSize:"36px",
-                boxShadow:"0 4px 14px rgba(60,30,10,0.2)",
+                display:"inline-flex", alignItems:"center", justifyContent:"center",
+                fontSize:"38px",
+                boxShadow:`0 4px 14px rgba(60,30,10,0.15)`,
                 transition:"all 0.2s ease",
                 animation: isListening ? "pulse 1.2s ease-in-out infinite" : "none",
               }}
@@ -441,54 +353,58 @@ function PracticeContent() {
             >
               {isProcessing ? (
                 <span style={{ width:"28px", height:"28px", border:`3px solid ${dynasty.deepColor}`, borderTopColor:"transparent", borderRadius:"50%", display:"block", animation:"spin 0.8s linear infinite" }}/>
-              ) : isListening ? (
-                "🔴"
-              ) : (
-                "🎙️"
-              )}
+              ) : isListening ? "🔴" : "🎙️"}
             </button>
           ) : (
-            <button
-              className="next-btn"
-              onClick={nextWord}
-              style={{
-                background:`linear-gradient(180deg, #E5C158 0%, #D4AF37 60%, #B8932A 100%)`,
-                color:"#3A2A0A",
-                border:"2px solid #8B6914",
-                borderRadius:"999px",
-                padding:"16px 48px",
-                fontSize:"17px",
-                fontWeight:700,
-                fontFamily:"'Playfair Display',serif",
-                letterSpacing:"0.06em",
-                cursor:"pointer",
-                boxShadow:"0 5px 14px rgba(139,0,0,0.22)",
-                transition:"transform 0.15s ease, box-shadow 0.15s ease",
-              }}
-            >
+            <button className="next-btn" onClick={nextWord} style={{
+              background: dynasty.deepColor,
+              color:"#FFF8F0",
+              border:`2px solid ${dynasty.deepColor}`,
+              borderRadius:"999px", padding:"16px 48px",
+              fontSize:"17px", fontWeight:700,
+              fontFamily:"'Playfair Display',serif",
+              letterSpacing:"0.06em", cursor:"pointer",
+              boxShadow:`0 5px 14px rgba(60,30,10,0.18)`,
+              transition:"transform 0.15s ease, box-shadow 0.15s ease",
+            }}>
               {currentIndex + 1 >= totalWords ? "See Results →" : "Next Character →"}
             </button>
           )}
 
-          {/* Tap hint */}
           {!isDone && !isListening && !isProcessing && (
-            <p style={{ marginTop:"14px", fontSize:"12px", color:"#8A7B5C", fontStyle:"italic" }}>
-              Tap the mic, say <span style={{ fontFamily:"'Noto Serif SC',serif" }}>{currentWord.hanzi}</span>, then stop speaking
+            <p style={{ marginTop:"14px", fontSize:"14px", color:"#8A7B5C", fontStyle:"italic" }}>
+              Tap the mic, say <span style={{ fontFamily:"'Noto Serif SC',serif", fontSize:"16px" }}>{currentWord.hanzi}</span>, then stop speaking
             </p>
           )}
           {isListening && (
-            <p style={{ marginTop:"14px", fontSize:"12px", color:dynasty.deepColor, fontStyle:"italic" }}>
-              Say <span style={{ fontFamily:"'Noto Serif SC',serif", fontSize:"15px" }}>{currentWord.hanzi}</span> now...
+            <p style={{ marginTop:"14px", fontSize:"14px", color:dynasty.deepColor, fontStyle:"italic" }}>
+              Say <span style={{ fontFamily:"'Noto Serif SC',serif", fontSize:"18px" }}>{currentWord.hanzi}</span> now...
             </p>
           )}
         </div>
 
-        {/* Word counter */}
-        <p style={{ textAlign:"center", marginTop:"32px", fontSize:"12px", color:"rgba(139,0,0,0.4)", letterSpacing:"0.15em" }}>
+        <p style={{ textAlign:"center", marginTop:"32px", fontSize:"13px", color:"rgba(139,0,0,0.4)", letterSpacing:"0.15em" }}>
           {currentIndex + 1} of {totalWords} · {dynasty.english} Dynasty
         </p>
-
       </div>
+
+      {/* Back button bottom left */}
+      <button
+        onClick={() => router.push(`/tones?dynasty=${dynastyId}&name=${encodeURIComponent(chineseName)}`)}
+        style={{
+          position:"fixed", bottom:"28px", left:"24px",
+          background:"rgba(255,248,240,0.92)",
+          border:`1.5px solid ${dynasty.deepColor}`,
+          borderRadius:"999px", padding:"10px 20px",
+          fontFamily:"'Playfair Display',serif", fontSize:"13px",
+          color:dynasty.deepColor, cursor:"pointer",
+          letterSpacing:"0.05em",
+          backdropFilter:"blur(4px)",
+          transition:"opacity 0.2s ease",
+        }}
+      >
+        ← Back
+      </button>
     </main>
   );
 }
@@ -496,7 +412,7 @@ function PracticeContent() {
 export default function PracticePage() {
   return (
     <Suspense fallback={
-      <main style={{ minHeight:"100vh", backgroundColor:"#F5E8C8", display:"flex", alignItems:"center", justifyContent:"center" }}>
+      <main style={{ minHeight:"100vh", backgroundColor:"#FFF8F0", display:"flex", alignItems:"center", justifyContent:"center" }}>
         <span style={{ fontFamily:"'Noto Serif SC',serif", fontSize:"48px", color:"#8B0000" }}>练</span>
       </main>
     }>
