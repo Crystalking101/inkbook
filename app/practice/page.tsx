@@ -152,6 +152,7 @@ function PracticeContent() {
     recognition.lang = "zh-CN";
     recognition.continuous = false;
     recognition.interimResults = false;
+    recognition.maxAlternatives = 3;
 
     recognition.onresult = async (event: any) => {
       setScoreState("processing");
@@ -159,7 +160,8 @@ function PracticeContent() {
       const transcript = event.results[0][0].transcript;
       const confidence = event.results[0][0].confidence;
       console.log("Heard:", transcript, "Confidence:", confidence);
-      const score = Math.round((confidence || 0.7) * 100);
+      // Default to 70 if confidence is 0 (Chrome sometimes returns 0)
+      const score = Math.round((confidence > 0 ? confidence : 0.70) * 100);
       setToneScore(score);
       setScores((prev) => [...prev, score]);
       setCardFlip(true);
@@ -169,11 +171,23 @@ function PracticeContent() {
       scoreStateRef.current = "done";
     };
 
-    recognition.onerror = (event: any) => {
+    recognition.onerror = async (event: any) => {
       console.error("Speech error:", event.error);
-      setScoreState("error");
-      scoreStateRef.current = "error";
-      setFeedback("Could not hear you. Please try again and speak clearly.");
+      if (event.error === "no-speech" || event.error === "audio-capture" || event.error === "network") {
+        // Give a default score so user can still proceed
+        const defaultScore = 70;
+        setToneScore(defaultScore);
+        setScores((prev) => [...prev, defaultScore]);
+        setCardFlip(true);
+        const fb = await getAIFeedback(currentWord.hanzi, currentWord.pinyin, defaultScore, dynasty.english);
+        setFeedback(fb);
+        setScoreState("done");
+        scoreStateRef.current = "done";
+      } else {
+        setScoreState("error");
+        scoreStateRef.current = "error";
+        setFeedback("Could not hear you. Please try again and speak clearly.");
+      }
     };
 
     recognition.onend = () => {
