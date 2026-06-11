@@ -1,4 +1,3 @@
-// app/page.tsx - InkBook Opening Screen FULL VERSION
 'use client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -88,39 +87,170 @@ export default function InkBookHome() {
           <span style={{ fontFamily:"'Playfair Display',serif", fontSize:'11px', color:'rgba(139,0,0,0.45)', letterSpacing:'3px', display:'block', marginTop:'3px' }}>I N K B O O K</span>
         </div>
 
-        {/* BOOK WRAPPER */}
-        <div style={{ position:'relative', paddingLeft:'50px', paddingBottom:'70px' }}>
-
-          {/* SPINE CHARM CHAIN */}
-          <div style={{ position:'absolute', left:'-32px', top:'20px', width:'40px', zIndex:30 }}>
-            <svg width="40" height="420" viewBox="0 0 40 420">
-              <line x1="20" y1="0" x2="20" y2="420" stroke="#C4A030" strokeWidth="1.5" strokeDasharray="4,3"/>
-              {[60,120,180,240,300,360].map(y => <ellipse key={y} cx="20" cy={y} rx="5" ry="3" fill="none" stroke="#C4A030" strokeWidth="1.5"/>)}
-              <line x1="20" y1="80" x2="8" y2="96" stroke="#C4A030" strokeWidth="1"/>
-              <circle cx="8" cy="106" r="11" fill="#D4AF37" stroke="#8B6010" strokeWidth="1"/>
-              <rect x="3" y="101" width="10" height="10" fill="#B8952A"/>
-              <text x="8" y="110" fontFamily="serif" fontSize="9" fill="#4A2800" textAnchor="middle">福</text>
-              <line x1="20" y1="150" x2="10" y2="164" stroke="#C4A030" strokeWidth="1"/>
-              <line x1="10" y1="164" x2="10" y2="170" stroke="#8B4513" strokeWidth="2"/>
-              <ellipse cx="10" cy="184" rx="8" ry="12" fill="#CC0000" stroke="#880000" strokeWidth="1"/>
-              <text x="10" y="188" fontFamily="serif" fontSize="8" fill="#FFD700" textAnchor="middle">福</text>
-              <line x1="7" y1="196" x2="5" y2="206" stroke="#D4AF37" strokeWidth="1"/>
-              <line x1="10" y1="196" x2="10" y2="207" stroke="#CC0000" strokeWidth="1"/>
-              <line x1="13" y1="196" x2="15" y2="206" stroke="#D4AF37" strokeWidth="1"/>
-              <line x1="20" y1="220" x2="10" y2="235" stroke="#C4A030" strokeWidth="1"/>
-              <ellipse cx="10" cy="245" rx="5" ry="7" fill="#2D8B50" stroke="#1A5A30" strokeWidth="1" opacity="0.9"/>
-              <ellipse cx="9" cy="243" rx="2" ry="2" fill="rgba(255,255,255,0.4)"/>
-              <line x1="20" y1="300" x2="10" y2="316" stroke="#C4A030" strokeWidth="1"/>
-              <circle cx="10" cy="324" r="5" fill="none" stroke="#C4A030" strokeWidth="1.5"/>
-              <circle cx="10" cy="324" r="2" fill="#C4A030"/>
-              <line x1="10" y1="329" x2="10" y2="345" stroke="#C4A030" strokeWidth="1.5"/>
-              <line x1="10" y1="337" x2="14" y2="341" stroke="#C4A030" strokeWidth="1.5"/>
-              <line x1="10" y1="342" x2="14" y2="346" stroke="#C4A030" strokeWidth="1.5"/>
-            </svg>
-          </div>
+        {/* BOOK WRAPPER — no paddingLeft needed anymore */}
+        <div style={{ position:'relative', paddingBottom:'70px' }}>
 
           {/* BOOK */}
           <div style={{ position:'relative', width:'340px', height:'420px', perspective:'1200px' }}>
+
+            {/* CHAIN CONNECTOR BAR — horizontal rod linking both chain tops */}
+            <div style={{
+              position:'absolute',
+              left:'-46px',
+              top:'14px',
+              width:'48px',
+              height:'14px',
+              zIndex:31,
+              opacity: isOpen ? 0 : 1,
+              transition: 'opacity 0.4s ease',
+              pointerEvents: 'none',
+            }}>
+              <svg width="48" height="14" viewBox="0 0 48 14">
+                {/* rod */}
+                <rect x="2" y="5" width="44" height="3" rx="1.5" fill="#C4A030"/>
+                {/* decorative ring in center */}
+                <circle cx="24" cy="6.5" r="4" fill="none" stroke="#C4A030" strokeWidth="1.5"/>
+                <circle cx="24" cy="6.5" r="1.5" fill="#D4AF37"/>
+                {/* end knots */}
+                <circle cx="4"  cy="6.5" r="3" fill="#D4AF37" stroke="#8B6010" strokeWidth="1"/>
+                <circle cx="44" cy="6.5" r="3" fill="#D4AF37" stroke="#8B6010" strokeWidth="1"/>
+                {/* short drops down to chain 1 (right side) and chain 2 (left side) */}
+                <line x1="44" y1="9" x2="44" y2="14" stroke="#C4A030" strokeWidth="1.5"/>
+                <line x1="22" y1="9" x2="22" y2="14" stroke="#B8952A" strokeWidth="1.5"/>
+              </svg>
+            </div>
+
+            {/* SPINE CHARM CHAIN 1 — gold coin, red lantern, jade bead, key */}
+            <div style={{
+              position:'absolute',
+              left:'-22px',
+              top:'20px',
+              width:'24px',
+              zIndex:30,
+              opacity: isOpen ? 0 : 1,
+              transition: 'opacity 0.4s ease',
+              pointerEvents: isOpen ? 'none' : 'auto',
+            }}>
+              <svg width="24" height="420" viewBox="0 0 24 420">
+                <line x1="20" y1="0" x2="20" y2="420" stroke="#C4A030" strokeWidth="1.5" strokeDasharray="4,3"/>
+                {[60,120,180,240,300,360].map(y => <ellipse key={y} cx="20" cy={y} rx="5" ry="3" fill="none" stroke="#C4A030" strokeWidth="1.5"/>)}
+                {/* Charm 1 — gold coin with 福 */}
+                <line x1="20" y1="80" x2="10" y2="96" stroke="#C4A030" strokeWidth="1"/>
+                <circle cx="10" cy="107" r="11" fill="#D4AF37" stroke="#8B6010" strokeWidth="1"/>
+                <rect x="5" y="102" width="10" height="10" fill="#B8952A"/>
+                <text x="10" y="111" fontFamily="serif" fontSize="9" fill="#4A2800" textAnchor="middle">福</text>
+                {/* Charm 2 — red lantern */}
+                <line x1="20" y1="150" x2="10" y2="164" stroke="#C4A030" strokeWidth="1"/>
+                <line x1="10" y1="164" x2="10" y2="170" stroke="#8B4513" strokeWidth="2"/>
+                <ellipse cx="10" cy="184" rx="8" ry="12" fill="#CC0000" stroke="#880000" strokeWidth="1"/>
+                <text x="10" y="188" fontFamily="serif" fontSize="8" fill="#FFD700" textAnchor="middle">福</text>
+                <line x1="7" y1="196" x2="5" y2="204" stroke="#D4AF37" strokeWidth="1"/>
+                <line x1="10" y1="196" x2="10" y2="205" stroke="#CC0000" strokeWidth="1"/>
+                <line x1="13" y1="196" x2="15" y2="204" stroke="#D4AF37" strokeWidth="1"/>
+                {/* Charm 3 — jade bead */}
+                <line x1="20" y1="220" x2="10" y2="235" stroke="#C4A030" strokeWidth="1"/>
+                <ellipse cx="10" cy="245" rx="5" ry="7" fill="#2D8B50" stroke="#1A5A30" strokeWidth="1" opacity="0.9"/>
+                <ellipse cx="9" cy="243" rx="2" ry="2" fill="rgba(255,255,255,0.4)"/>
+                {/* Charm 4 — key */}
+                <line x1="20" y1="300" x2="10" y2="316" stroke="#C4A030" strokeWidth="1"/>
+                <circle cx="10" cy="324" r="5" fill="none" stroke="#C4A030" strokeWidth="1.5"/>
+                <circle cx="10" cy="324" r="2" fill="#C4A030"/>
+                <line x1="10" y1="329" x2="10" y2="345" stroke="#C4A030" strokeWidth="1.5"/>
+                <line x1="10" y1="337" x2="14" y2="341" stroke="#C4A030" strokeWidth="1.5"/>
+                <line x1="10" y1="342" x2="14" y2="346" stroke="#C4A030" strokeWidth="1.5"/>
+              </svg>
+            </div>
+
+            {/* SPINE CHARM CHAIN 2 — yin-yang, star, tassel knot, red envelope */}
+            <div style={{
+              position:'absolute',
+              left:'-44px',
+              top:'28px',
+              width:'24px',
+              zIndex:29,
+              opacity: isOpen ? 0 : 1,
+              transition: 'opacity 0.4s ease 0.05s',
+              pointerEvents: isOpen ? 'none' : 'auto',
+            }}>
+              <svg width="24" height="420" viewBox="0 0 24 420">
+                <line x1="20" y1="0" x2="20" y2="420" stroke="#B8952A" strokeWidth="1.5" strokeDasharray="3,4"/>
+                {[70,140,200,270,330].map(y => <ellipse key={y} cx="20" cy={y} rx="5" ry="3" fill="none" stroke="#B8952A" strokeWidth="1.5"/>)}
+                {/* Charm 1 — yin-yang */}
+                <line x1="20" y1="90" x2="10" y2="104" stroke="#B8952A" strokeWidth="1"/>
+                <circle cx="10" cy="115" r="11" fill="#F5E8C8" stroke="#8B6010" strokeWidth="1"/>
+                <path d="M10,104 A11,11 0 0 0 10,126 A5.5,5.5 0 0 0 10,115 A5.5,5.5 0 0 1 10,104 Z" fill="#2A2A2A"/>
+                <circle cx="10" cy="109" r="2" fill="#F5E8C8"/>
+                <circle cx="10" cy="121" r="2" fill="#2A2A2A"/>
+                {/* Charm 2 — gold star */}
+                <line x1="20" y1="160" x2="10" y2="174" stroke="#B8952A" strokeWidth="1"/>
+                <polygon
+                  points="10,164 12,170 18,170 13,174 15,180 10,176 5,180 7,174 2,170 8,170"
+                  fill="#D4AF37" stroke="#B8952A" strokeWidth="0.8"
+                  transform="translate(0,10)"
+                />
+                {/* Charm 3 — Chinese tassel knot */}
+                <line x1="20" y1="220" x2="10" y2="234" stroke="#B8952A" strokeWidth="1"/>
+                <circle cx="10" cy="240" r="7" fill="none" stroke="#CC0000" strokeWidth="2"/>
+                <circle cx="10" cy="240" r="3" fill="#CC0000"/>
+                <path d="M3,240 Q0,232 3,228 Q6,224 10,227" fill="none" stroke="#CC0000" strokeWidth="1.5"/>
+                <path d="M17,240 Q20,232 17,228 Q14,224 10,227" fill="none" stroke="#CC0000" strokeWidth="1.5"/>
+                <line x1="8"  y1="247" x2="6"  y2="262" stroke="#CC0000" strokeWidth="1.2" strokeLinecap="round"/>
+                <line x1="10" y1="247" x2="10" y2="264" stroke="#D4AF37" strokeWidth="1.2" strokeLinecap="round"/>
+                <line x1="12" y1="247" x2="14" y2="262" stroke="#CC0000" strokeWidth="1.2" strokeLinecap="round"/>
+                {/* Charm 4 — red envelope */}
+                <line x1="20" y1="300" x2="10" y2="314" stroke="#B8952A" strokeWidth="1"/>
+                <rect x="3" y="314" width="14" height="10" rx="1.5" fill="#CC0000" stroke="#880000" strokeWidth="1"/>
+                <path d="M3,314 L10,320 L17,314" fill="none" stroke="#FFD700" strokeWidth="1"/>
+                <text x="10" y="322" fontFamily="serif" fontSize="7" fill="#FFD700" textAnchor="middle" fontWeight="700">福</text>
+              </svg>
+            </div>
+
+            {/* JOURNAL CLIP — top right corner, Chinese theme charms */}
+            <div style={{
+              position:'absolute',
+              right:'-12px',
+              top:'-52px',
+              width:'44px',
+              zIndex:35,
+              opacity: isOpen ? 0 : 1,
+              transition: 'opacity 0.4s ease',
+              pointerEvents: 'none',
+            }}>
+              <svg width="44" height="130" viewBox="0 0 44 130">
+                {/* paperclip outer loop */}
+                <path
+                  d="M28,4 C36,4 40,10 40,18 L40,72 C40,76 37,78 34,78 L34,30 C34,24 30,20 24,20 C18,20 14,24 14,30 L14,80 C14,86 18,90 24,90 C30,90 34,86 34,80"
+                  fill="none" stroke="#D4AF37" strokeWidth="3" strokeLinecap="round"
+                />
+                {/* clip shine */}
+                <path
+                  d="M30,4 C36,5 39,11 39,18"
+                  fill="none" stroke="rgba(255,240,180,0.6)" strokeWidth="1.2" strokeLinecap="round"
+                />
+                {/* ring at bottom of clip */}
+                <circle cx="24" cy="90" r="4" fill="none" stroke="#D4AF37" strokeWidth="2"/>
+                {/* charm drop line */}
+                <line x1="24" y1="94" x2="24" y2="100" stroke="#D4AF37" strokeWidth="1.5"/>
+                {/* CHARM 1 — red heart with 爱 */}
+                <path d="M18,102 C18,99 21,97 24,100 C27,97 30,99 30,102 C30,107 24,112 24,112 C24,112 18,107 18,102 Z" fill="#CC0000" stroke="#880000" strokeWidth="0.8"/>
+                <text x="24" y="107" fontFamily="serif" fontSize="6" fill="#FFD700" textAnchor="middle" fontWeight="700">爱</text>
+                {/* chain link to charm 2 */}
+                <line x1="20" y1="112" x2="18" y2="118" stroke="#D4AF37" strokeWidth="1"/>
+                {/* CHARM 2 — jade green gem */}
+                <polygon points="18,118 14,122 18,128 22,122" fill="#2D8B50" stroke="#1A5A30" strokeWidth="0.8"/>
+                <polygon points="16,121 18,119 20,121 18,124" fill="rgba(255,255,255,0.3)"/>
+                {/* chain link to charm 3 */}
+                <line x1="28" y1="112" x2="30" y2="118" stroke="#D4AF37" strokeWidth="1"/>
+                {/* CHARM 3 — pink cherry blossom */}
+                {[0,72,144,216,288].map((r,i) => (
+                  <ellipse key={i} cx="30" cy="118" rx="3.5" ry="5"
+                    fill={i%2===0?'#F4A7B9':'#F2C4CE'}
+                    transform={`rotate(${r},30,124)`} opacity="0.95"
+                  />
+                ))}
+                <circle cx="30" cy="124" r="2.5" fill="#FFD700"/>
+              </svg>
+            </div>
 
             <div style={{ position:'absolute', bottom:'-14px', left:'50%', transform:'translateX(-50%)', width:'340px', height:'14px', background:'rgba(0,0,0,0.12)', borderRadius:'50%', filter:'blur(5px)', zIndex:0 }}/>
             <div style={{ position:'absolute', right:'-10px', top:'3px', width:'22px', height:'414px', background:'repeating-linear-gradient(90deg,#F0E0C0 0px,#F0E0C0 1px,#DDD0A8 1px,#DDD0A8 2px,#EEE0BE 2px,#EEE0BE 3px,#C8B080 3px,#C8B080 4px)', borderRadius:'0 4px 4px 0', boxShadow:'3px 0 8px rgba(0,0,0,0.18)', zIndex:1 }}/>
@@ -506,7 +636,7 @@ export default function InkBookHome() {
               </svg>
             </div>
 
-          </div>{/* end book */}
+          </div>{/* end book div */}
         </div>{/* end book wrapper */}
 
         <p style={{ marginTop:'70px', fontFamily:"'Playfair Display',serif", fontSize:'11px', color:'rgba(139,0,0,0.45)', fontStyle:'italic', letterSpacing:'1px', textAlign:'center' }}>
