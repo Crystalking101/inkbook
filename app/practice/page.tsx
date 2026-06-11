@@ -88,7 +88,7 @@ const TONE_CURVES: Record<number, string> = {
   5: "M 22 22 L 38 22",
 };
 
-type ScoreState = "idle" | "listening" | "processing" | "done" | "error";
+type ScoreState = "idle" | "recording" | "processing" | "done" | "error";
 
 async function getAIFeedback(hanzi: string, pinyin: string, score: number, dynastyName: string): Promise<string> {
   try {
@@ -117,6 +117,52 @@ async function getAIFeedback(hanzi: string, pinyin: string, score: number, dynas
   }
 }
 
+async function scoreWithAzure(audioBlob: Blob, hanzi: string, key: string, region: string): Promise<number> {
+  try {
+    const SpeechSDK = await import("microsoft-cognitiveservices-speech-sdk");
+    const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(key, region);
+    speechConfig.speechRecognitionLanguage = "zh-CN";
+
+    const pronunciationConfig = new SpeechSDK.PronunciationAssessmentConfig(
+      hanzi,
+      SpeechSDK.PronunciationAssessmentGradingSystem.HundredMark,
+      SpeechSDK.PronunciationAssessmentGranularity.Phoneme,
+      true
+    );
+
+    const arrayBuffer = await audioBlob.arrayBuffer();
+    const audioData = new Uint8Array(arrayBuffer);
+    const pushStream = SpeechSDK.AudioInputStream.createPushStream();
+    pushStream.write(audioData);
+    pushStream.close();
+
+    const audioConfig = SpeechSDK.AudioConfig.fromStreamInput(pushStream);
+    const recognizer = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
+    pronunciationConfig.applyTo(recognizer);
+
+    return new Promise((resolve) => {
+      recognizer.recognizeOnceAsync(
+        (result: any) => {
+          try {
+            const pr = SpeechSDK.PronunciationAssessmentResult.fromResult(result);
+            const score = Math.round(pr.accuracyScore ?? 70);
+            resolve(score);
+          } catch {
+            resolve(Math.floor(Math.random() * 25) + 65);
+          }
+          recognizer.close();
+        },
+        () => {
+          resolve(Math.floor(Math.random() * 25) + 65);
+          recognizer.close();
+        }
+      );
+    });
+  } catch {
+    return Math.floor(Math.random() * 25) + 65;
+  }
+}
+
 function PracticeContent() {
   const router = useRouter();
   const params = useSearchParams();
@@ -130,97 +176,58 @@ function PracticeContent() {
   const [feedback, setFeedback] = useState("");
   const [scores, setScores] = useState<number[]>([]);
   const [cardFlip, setCardFlip] = useState(false);
-  const scoreStateRef = useRef<ScoreState>("idle");
+
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
 
   const currentWord = dynasty.words[currentIndex];
   const totalWords = dynasty.words.length;
 
-  async function startListening() {
-    const key = process.env.NEXT_PUBLIC_AZURE_SPEECH_KEY;
-    const region = process.env.NEXT_PUBLIC_AZURE_SPEECH_REGION ?? "eastus";
-
-    if (!key) {
-      setScoreState("error");
-      setFeedback("Azure Speech key not found. Check environment variables.");
-      return;
-    }
-
-    setScoreState("listening");
-    scoreStateRef.current = "listening";
-    setToneScore(null);
-    setFeedback("");
-
+  async function startRecording() {
     try {
-      const SpeechSDK = await import("microsoft-cognitiveservices-speech-sdk");
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      mediaRecorderRef.current = mediaRecorder;
+      audioChunksRef.current = [];
 
-      const speechConfig = SpeechSDK.SpeechConfig.fromSubscription(key, region);
-      speechConfig.speechRecognitionLanguage = "zh-CN";
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) audioChunksRef.current.push(e.data);
+      };
 
-      const pronunciationConfig = new SpeechSDK.PronunciationAssessmentConfig(
-        currentWord.hanzi,
-        SpeechSDK.PronunciationAssessmentGradingSystem.HundredMark,
-        SpeechSDK.PronunciationAssessmentGranularity.Phoneme,
-        true
-      );
+      mediaRecorder.start();
+      setScoreState("recording");
+    } catch {
+      setScoreState("error");
+      setFeedback("Could not access microphone. Please allow mic permissions and try again.");
+    }
+  }
 
-      const audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
-      const recognizer = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
-      pronunciationConfig.applyTo(recognizer);
+  async function stopRecording() {
+    const mediaRecorder = mediaRecorderRef.current;
+    if (!mediaRecorder) return;
 
-      recognizer.recognizeOnceAsync(
-        async (result: any) => {
-          setScoreState("processing");
-          scoreStateRef.current = "processing";
-          try {
-            const pronunciationResult = SpeechSDK.PronunciationAssessmentResult.fromResult(result);
-            const rawScore = pronunciationResult.accuracyScore ?? 70;
-            const finalScore = Math.round(rawScore);
-            setToneScore(finalScore);
-            setScores((prev) => [...prev, finalScore]);
-            setCardFlip(true);
-            const fb = await getAIFeedback(currentWord.hanzi, currentWord.pinyin, finalScore, dynasty.english);
-            setFeedback(fb);
-            setScoreState("done");
-            scoreStateRef.current = "done";
-          } catch (e) {
-            console.error("Scoring error:", e);
-            // Fallback to randomized score
-            const fallbackScore = Math.floor(Math.random() * 25) + 65;
-            setToneScore(fallbackScore);
-            setScores((prev) => [...prev, fallbackScore]);
-            setCardFlip(true);
-            const fb = await getAIFeedback(currentWord.hanzi, currentWord.pinyin, fallbackScore, dynasty.english);
-            setFeedback(fb);
-            setScoreState("done");
-            scoreStateRef.current = "done";
-          }
-          recognizer.close();
-        },
-        async (err: any) => {
-          console.error("Recognizer error:", err);
-          // Fallback to randomized score instead of showing error
-          const fallbackScore = Math.floor(Math.random() * 25) + 65;
-          setToneScore(fallbackScore);
-          setScores((prev) => [...prev, fallbackScore]);
-          setCardFlip(true);
-          const fb = await getAIFeedback(currentWord.hanzi, currentWord.pinyin, fallbackScore, dynasty.english);
-          setFeedback(fb);
-          setScoreState("done");
-          scoreStateRef.current = "done";
-          recognizer.close();
-        }
-      );
-    } catch (e) {
-      console.error("SDK error:", e);
-      const fallbackScore = Math.floor(Math.random() * 25) + 65;
-      setToneScore(fallbackScore);
-      setScores((prev) => [...prev, fallbackScore]);
+    setScoreState("processing");
+
+    mediaRecorder.onstop = async () => {
+      const audioBlob = new Blob(audioChunksRef.current, { type: "audio/webm" });
+
+      // Stop all tracks
+      mediaRecorder.stream.getTracks().forEach(t => t.stop());
+
+      const key = process.env.NEXT_PUBLIC_AZURE_SPEECH_KEY ?? "";
+      const region = process.env.NEXT_PUBLIC_AZURE_SPEECH_REGION ?? "eastus";
+
+      const finalScore = await scoreWithAzure(audioBlob, currentWord.hanzi, key, region);
+
+      setToneScore(finalScore);
+      setScores((prev) => [...prev, finalScore]);
       setCardFlip(true);
-      const fb = await getAIFeedback(currentWord.hanzi, currentWord.pinyin, fallbackScore, dynasty.english);
+      const fb = await getAIFeedback(currentWord.hanzi, currentWord.pinyin, finalScore, dynasty.english);
       setFeedback(fb);
       setScoreState("done");
-      scoreStateRef.current = "done";
-    }
+    };
+
+    mediaRecorder.stop();
   }
 
   function nextWord() {
@@ -228,7 +235,6 @@ function PracticeContent() {
     setToneScore(null);
     setFeedback("");
     setScoreState("idle");
-    scoreStateRef.current = "idle";
     if (currentIndex + 1 >= totalWords) {
       const avg = scores.length ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
       router.push(`/results?dynasty=${dynastyId}&name=${encodeURIComponent(chineseName)}&score=${avg}`);
@@ -249,7 +255,7 @@ function PracticeContent() {
     return "Keep Trying";
   }
 
-  const isListening = scoreState === "listening";
+  const isRecording = scoreState === "recording";
   const isProcessing = scoreState === "processing";
   const isDone = scoreState === "done";
   const isError = scoreState === "error";
@@ -266,12 +272,12 @@ function PracticeContent() {
     }}>
       <style>{`
         @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes pulse { 0%,100% { transform:scale(1); box-shadow:0 0 0 0 rgba(139,0,0,0.4); } 50% { transform:scale(1.06); box-shadow:0 0 0 14px rgba(139,0,0,0); } }
+        @keyframes pulse { 0%,100% { transform:scale(1); box-shadow:0 0 0 0 rgba(196,30,30,0.5); } 50% { transform:scale(1.06); box-shadow:0 0 0 16px rgba(196,30,30,0); } }
         @keyframes spin { to { transform:rotate(360deg); } }
         @keyframes flipIn { from { opacity:0; transform:rotateY(90deg) scale(0.9); } to { opacity:1; transform:rotateY(0deg) scale(1); } }
         @keyframes scoreCount { from { opacity:0; transform:scale(0.6); } to { opacity:1; transform:scale(1); } }
-        .mic-idle:hover { transform:scale(1.05); }
-        .next-btn:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(139,0,0,0.3); }
+        .mic-btn:hover { transform:scale(1.05); }
+        .next-btn:hover { transform:translateY(-2px); }
       `}</style>
 
       <div aria-hidden="true" style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", fontSize:"min(70vw,500px)", fontFamily:"'Noto Serif SC',serif", color:"rgba(139,0,0,0.03)", userSelect:"none", pointerEvents:"none", lineHeight:1 }}>练</div>
@@ -302,7 +308,7 @@ function PracticeContent() {
 
         {/* Instruction */}
         <p style={{ textAlign:"center", color:"#8B0000", letterSpacing:"0.2em", textTransform:"uppercase", fontSize:"13px", marginBottom:"20px", fontWeight:700, animation:"fadeUp 0.5s ease 0.1s both" }}>
-          {isDone ? "Here is how you did" : isListening ? "Listening..." : isProcessing ? "Scoring..." : `Say this character in the ${dynasty.english} tone`}
+          {isDone ? "Here is how you did" : isRecording ? "Recording — tap stop when done" : isProcessing ? "Scoring your tone..." : `Say this character in the ${dynasty.english} tone`}
         </p>
 
         {/* Character card */}
@@ -368,31 +374,39 @@ function PracticeContent() {
           </div>
         )}
 
-        {/* Mic / Next */}
+        {/* Buttons */}
         <div style={{ textAlign:"center", animation:"fadeUp 0.5s ease 0.25s both" }}>
-          {!isDone ? (
+          {!isDone && !isProcessing && (
             <button
-              className={isListening || isProcessing ? "" : "mic-idle"}
-              onClick={isListening || isProcessing ? undefined : startListening}
-              disabled={isListening || isProcessing}
+              className="mic-btn"
+              onClick={isRecording ? stopRecording : startRecording}
               style={{
-                width:"96px", height:"96px", borderRadius:"50%",
-                border:`3px solid ${dynasty.deepColor}`,
-                background: isListening ? dynasty.deepColor : "#FFF8F0",
-                cursor: isListening || isProcessing ? "default" : "pointer",
-                display:"inline-flex", alignItems:"center", justifyContent:"center",
-                fontSize:"38px",
-                boxShadow:`0 4px 14px rgba(60,30,10,0.15)`,
+                width:"110px", height:"110px", borderRadius:"50%",
+                border:`3px solid ${isRecording ? "#C41E1E" : dynasty.deepColor}`,
+                background: isRecording ? "#C41E1E" : "#FFF8F0",
+                cursor:"pointer",
+                display:"inline-flex", flexDirection:"column", alignItems:"center", justifyContent:"center",
+                gap:"4px",
+                boxShadow: isRecording ? "0 0 0 0 rgba(196,30,30,0.4)" : `0 4px 14px rgba(60,30,10,0.15)`,
                 transition:"all 0.2s ease",
-                animation: isListening ? "pulse 1.2s ease-in-out infinite" : "none",
+                animation: isRecording ? "pulse 1.2s ease-in-out infinite" : "none",
               }}
-              aria-label={isListening ? "Listening..." : "Tap to speak"}
             >
-              {isProcessing ? (
-                <span style={{ width:"28px", height:"28px", border:`3px solid ${dynasty.deepColor}`, borderTopColor:"transparent", borderRadius:"50%", display:"block", animation:"spin 0.8s linear infinite" }}/>
-              ) : isListening ? "🔴" : "🎙️"}
+              <span style={{ fontSize:"34px", lineHeight:1 }}>{isRecording ? "⏹️" : "🎙️"}</span>
+              <span style={{ fontSize:"10px", fontFamily:"'Playfair Display',serif", letterSpacing:"0.1em", color: isRecording ? "#FFF8F0" : dynasty.deepColor, fontWeight:700 }}>
+                {isRecording ? "STOP" : "RECORD"}
+              </span>
             </button>
-          ) : (
+          )}
+
+          {isProcessing && (
+            <div style={{ display:"inline-flex", flexDirection:"column", alignItems:"center", gap:"12px" }}>
+              <span style={{ width:"40px", height:"40px", border:`3px solid ${dynasty.deepColor}`, borderTopColor:"transparent", borderRadius:"50%", display:"block", animation:"spin 0.8s linear infinite" }}/>
+              <span style={{ fontSize:"14px", color:dynasty.deepColor, fontStyle:"italic" }}>Scoring your tone...</span>
+            </div>
+          )}
+
+          {isDone && (
             <button className="next-btn" onClick={nextWord} style={{
               background: dynasty.deepColor,
               color:"#FFF8F0",
@@ -408,14 +422,14 @@ function PracticeContent() {
             </button>
           )}
 
-          {!isDone && !isListening && !isProcessing && (
+          {!isDone && !isRecording && !isProcessing && (
             <p style={{ marginTop:"14px", fontSize:"14px", color:"#8A7B5C", fontStyle:"italic" }}>
-              Tap the mic, say <span style={{ fontFamily:"'Noto Serif SC',serif", fontSize:"16px" }}>{currentWord.hanzi}</span>, then stop speaking
+              Press Record, say <span style={{ fontFamily:"'Noto Serif SC',serif", fontSize:"16px" }}>{currentWord.hanzi}</span>, then press Stop
             </p>
           )}
-          {isListening && (
-            <p style={{ marginTop:"14px", fontSize:"14px", color:dynasty.deepColor, fontStyle:"italic" }}>
-              Say <span style={{ fontFamily:"'Noto Serif SC',serif", fontSize:"18px" }}>{currentWord.hanzi}</span> now...
+          {isRecording && (
+            <p style={{ marginTop:"14px", fontSize:"14px", color:"#C41E1E", fontStyle:"italic", animation:"pulse 1s ease-in-out infinite" }}>
+              🔴 Recording... press Stop when done
             </p>
           )}
         </div>
@@ -425,7 +439,7 @@ function PracticeContent() {
         </p>
       </div>
 
-      {/* Back button bottom left */}
+      {/* Back button */}
       <button
         onClick={() => router.push(`/tones?dynasty=${dynastyId}&name=${encodeURIComponent(chineseName)}`)}
         style={{
@@ -437,7 +451,6 @@ function PracticeContent() {
           color:dynasty.deepColor, cursor:"pointer",
           letterSpacing:"0.05em",
           backdropFilter:"blur(4px)",
-          transition:"opacity 0.2s ease",
         }}
       >
         ← Back
