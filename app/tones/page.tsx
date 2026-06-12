@@ -133,7 +133,7 @@ function RansomTitle({ text, dynasty }: { text: string; dynasty: DynastyTone }) 
               <span key={i} style={{
                 fontFamily: idx % 2 === 0 ? "'Playfair Display', serif" : "'Noto Serif SC', serif",
                 fontWeight: 900,
-                fontSize: "clamp(28px, 6vw, 44px)",
+                fontSize: "clamp(18px, 4vw, 28px)",
                 padding: "3px 10px",
                 lineHeight: 1.2,
                 background: colors[idx % colors.length].bg,
@@ -352,7 +352,7 @@ function ToneIntroContent() {
 
         {/* Ransom title */}
         <div style={{ animation: "fadeUp 0.6s ease-out 0.1s both", marginBottom: "10px" }}>
-          <RansomTitle text={`THE ${dynasty.toneNumber.toUpperCase()} TONE`} dynasty={dynasty} />
+          <RansomTitle text={`${['1ST','2ND','3RD','4TH','5TH'][dynasty.toneNumber - 1]} TONE`} dynasty={dynasty} />
         </div>
 
         {/* Tone mark large */}
