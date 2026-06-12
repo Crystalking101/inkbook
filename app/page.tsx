@@ -78,9 +78,9 @@ export default function InkBookHome() {
         input:focus { outline: none; }
         input::placeholder { color: rgba(90,58,26,0.35); font-style:italic; font-size:11px; font-family:'Playfair Display',serif; }
 
-       /* MOBILE */
+      /* MOBILE */
         @media (max-width: 600px) {
-          .book-inner-page { display: none !important; }
+          .book-inner-page { display: block !important; }
           .mobile-cover { display: none !important; }
           .mobile-form { display: none !important; }
           .book-wrap { 
@@ -88,6 +88,12 @@ export default function InkBookHome() {
             transform-origin: top center !important;
             margin-bottom: -120px !important;
           }
+        }
+        @media (min-width: 601px) {
+          .mobile-cover { display: none !important; }
+          .mobile-form { display: none !important; }
+        }
+       
         }
         @media (min-width: 601px) {
           .mobile-cover { display: none !important; }
