@@ -304,7 +304,7 @@ function DynastyContent() {
         <p style={{ marginTop:'24px', fontFamily:"'Playfair Display',serif", fontSize:'12px', color:'rgba(139,0,0,0.4)', fontStyle:'italic', letterSpacing:'1px', textAlign:'center', position:'relative', zIndex:2 }}>
           Your dynasty shapes your learning journey
         </p>
-        <button onClick={() => router.back()} style={{ marginTop:'10px', background:'transparent', border:'none', fontFamily:"'Playfair Display',serif", fontSize:'11px', color:'rgba(139,0,0,0.4)', cursor:'pointer', fontStyle:'italic', letterSpacing:'1px', position:'relative', zIndex:2 }}>
+        <button onClick={() => router.push(`/learn?name=${encodeURIComponent(chineseName)}`)} style={{ marginTop:'10px', background:'transparent', border:'none', fontFamily:"'Playfair Display',serif", fontSize:'11px', color:'rgba(139,0,0,0.4)', cursor:'pointer', fontStyle:'italic', letterSpacing:'1px', position:'relative', zIndex:2 }}>
           ← back to your name
         </button>
       </div>
