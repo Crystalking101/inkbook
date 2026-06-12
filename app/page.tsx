@@ -312,8 +312,8 @@ export default function InkBookHome() {
                   {isLoading ? '✦ WRITING YOUR NAME... ✦' : '✦ GENERATE MY CHINESE NAME ✦'}
                 </button>
                 {result && (
-                  <button onClick={e => { e.stopPropagation(); router.push(`/dynasty?name=${encodeURIComponent(result.chinese)}`); }} style={{ background:'#D4AF37', color:'#3A2010', border:'none', padding:'8px 16px', fontFamily:"'Playfair Display',serif", fontSize:'9px', letterSpacing:'1.5px', cursor:'pointer', width:'100%', marginTop:'8px', fontWeight:700 }}>
-                    Choose Your Dynasty →
+                  <button onClick={e => { e.stopPropagation(); router.push(`/learn?name=${encodeURIComponent(result.chinese)}&english=${encodeURIComponent(nameInput)}`); }} style={{ background:'#D4AF37', color:'#3A2010', border:'none', padding:'8px 16px', fontFamily:"'Playfair Display',serif", fontSize:'9px', letterSpacing:'1.5px', cursor:'pointer', width:'100%', marginTop:'8px', fontWeight:700 }}>
+                    🖌️ Enter the Study Hall →
                   </button>
                 )}
               </div>
