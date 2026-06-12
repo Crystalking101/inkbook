@@ -88,12 +88,12 @@ export default function InkBookHome() {
             transform-origin: top center !important;
             margin-bottom: -120px !important;
           }
-        }
-        @media (min-width: 601px) {
-          .mobile-cover { display: none !important; }
-          .mobile-form { display: none !important; }
-        }
-       
+          .book-wrap > div > div > div[style*="zIndex:30"],
+          .book-wrap > div > div > div[style*="zIndex:31"],
+          .book-wrap > div > div > div[style*="zIndex:29"],
+          .book-wrap > div > div > div[style*="zIndex:35"] {
+            display: none !important;
+          }
         }
         @media (min-width: 601px) {
           .mobile-cover { display: none !important; }
