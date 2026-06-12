@@ -121,27 +121,32 @@ function RansomTitle({ text, dynasty }: { text: string; dynasty: DynastyTone }) 
     { bg: "#8B0000", color: "#FFF8F0" },
     { bg: dynasty.color, color: "#3A2A1A" },
   ];
+  // Split into words to prevent awkward wrapping
+  const words = text.split(" ");
   return (
-    <h1 style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "6px", margin: 0 }}>
-      {text.split("").map((ch, i) =>
-        ch === " " ? (
-          <span key={i} style={{ width: "20px" }} />
-        ) : (
-          <span key={i} style={{
-            fontFamily: i % 2 === 0 ? "'Playfair Display', serif" : "'Noto Serif SC', serif",
-            fontWeight: 900,
-            fontSize: "clamp(32px, 7vw, 52px)",
-            padding: "3px 12px",
-            lineHeight: 1.2,
-            background: colors[i % colors.length].bg,
-            color: colors[i % colors.length].color,
-            transform: `rotate(${i % 2 === 0 ? -3 : 2}deg)`,
-            boxShadow: "2px 3px 0 rgba(60,30,10,0.22)",
-            display: "inline-block",
-            borderRadius: "2px",
-          }}>{ch}</span>
-        )
-      )}
+    <h1 style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "10px", margin: 0, rowGap: "8px" }}>
+      {words.map((word, wi) => (
+        <span key={wi} style={{ display: "flex", gap: "4px" }}>
+          {word.split("").map((ch, i) => {
+            const idx = words.slice(0, wi).join("").length + i;
+            return (
+              <span key={i} style={{
+                fontFamily: idx % 2 === 0 ? "'Playfair Display', serif" : "'Noto Serif SC', serif",
+                fontWeight: 900,
+                fontSize: "clamp(28px, 6vw, 44px)",
+                padding: "3px 10px",
+                lineHeight: 1.2,
+                background: colors[idx % colors.length].bg,
+                color: colors[idx % colors.length].color,
+                transform: `rotate(${idx % 2 === 0 ? -3 : 2}deg)`,
+                boxShadow: "2px 3px 0 rgba(60,30,10,0.22)",
+                display: "inline-block",
+                borderRadius: "2px",
+              }}>{ch}</span>
+            );
+          })}
+        </span>
+      ))}
     </h1>
   );
 }

@@ -222,9 +222,9 @@ function VerbsContent() {
                       {verb.sentences.map(s => (
                         <div key={s.chinese} style={{ display:"flex", alignItems:"center", gap:"12px", padding:"10px 14px", background:"rgba(255,248,240,0.9)", borderRadius:"10px", border:`1px solid ${verb.deepColor}15` }}>
                           <div style={{ flex:1 }}>
-                            <p style={{ margin:0, fontFamily:"'Noto Serif SC',serif", fontSize:"18px", color:verb.deepColor }}>{s.chinese}</p>
-                            <p style={{ margin:"2px 0 0", fontStyle:"italic", fontSize:"12px", color:"#6B5B3E" }}>{s.pinyin}</p>
-                            <p style={{ margin:"1px 0 0", fontSize:"12px", color:"#8A7B5C" }}>{s.english}</p>
+                            <p style={{ margin:0, fontFamily:"'Noto Serif SC',serif", fontSize:"20px", color:verb.deepColor }}>{s.chinese}</p>
+                            <p style={{ margin:"2px 0 0", fontStyle:"italic", fontSize:"15px", color:"#6B5B3E" }}>{s.pinyin}</p>
+                            <p style={{ margin:"1px 0 0", fontSize:"14px", color:"#8A7B5C" }}>{s.english}</p>
                           </div>
                           <button onClick={() => speak(s.chinese)}
                             style={{ background:verb.deepColor, color:"#FFF8F0", border:"none", borderRadius:"999px", padding:"6px 14px", fontSize:"14px", cursor:"pointer", flexShrink:0 }}>

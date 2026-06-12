@@ -230,9 +230,9 @@ function PronounsContent() {
                   {pattern.examples.map(ex => (
                     <div key={ex.chinese} style={{ display:"flex", alignItems:"center", gap:"12px", padding:"8px 12px", background:"rgba(255,248,240,0.8)", borderRadius:"8px", border:`1px solid ${pattern.deepColor}20` }}>
                       <div style={{ flex:1 }}>
-                        <p style={{ margin:0, fontFamily:"'Noto Serif SC',serif", fontSize:"18px", color:pattern.deepColor }}>{ex.chinese}</p>
-                        <p style={{ margin:"2px 0 0", fontStyle:"italic", fontSize:"12px", color:"#6B5B3E" }}>{ex.pinyin}</p>
-                        <p style={{ margin:"1px 0 0", fontSize:"12px", color:"#8A7B5C" }}>{ex.english}</p>
+                        <p style={{ margin:0, fontFamily:"'Noto Serif SC',serif", fontSize:"20px", color:pattern.deepColor }}>{ex.chinese}</p>
+                        <p style={{ margin:"2px 0 0", fontStyle:"italic", fontSize:"15px", color:"#6B5B3E" }}>{ex.pinyin}</p>
+                        <p style={{ margin:"1px 0 0", fontSize:"14px", color:"#8A7B5C" }}>{ex.english}</p>
                       </div>
                       <button onClick={() => speak(ex.chinese)}
                         style={{ background:pattern.deepColor, color:"#FFF8F0", border:"none", borderRadius:"999px", padding:"6px 14px", fontSize:"14px", cursor:"pointer", flexShrink:0 }}>
