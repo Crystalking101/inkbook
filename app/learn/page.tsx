@@ -162,10 +162,32 @@ function LearnContent() {
         {/* Header */}
         <div style={{ textAlign:"center", marginBottom:"32px", animation:"fadeUp 0.5s ease both" }}>
           {chineseName && (
-            <p style={{ fontFamily:"'Noto Serif SC',serif", fontSize:"15px", color:"rgba(139,0,0,0.6)", letterSpacing:"4px", marginBottom:"8px" }}>
-              {chineseName} {englishName ? `· ${englishName}` : ""}
-            </p>
-          )}
+  <div style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", gap:"4px", marginBottom:"12px" }}>
+    {chineseName.split("").map((ch, i) => {
+      const colors = [
+        { bg:"#8B0000", c:"#FFF8F0" },
+        { bg:"#D4849A", c:"#FFF8F0" },
+        { bg:"#E8E4B8", c:"#5A3A1A" },
+        { bg:"#7BA888", c:"#FFF8F0" },
+      ];
+      const s = colors[i % colors.length];
+      return (
+        <span key={i} style={{
+          display:"inline-flex", alignItems:"center", justifyContent:"center",
+          fontFamily:"'Noto Serif SC',serif", fontWeight:700,
+          fontSize:"clamp(28px,7vw,44px)",
+          padding:"3px 10px",
+          background: s.bg, color: s.c,
+          transform:`rotate(${i%2===0?-2:2}deg)`,
+          boxShadow:"2px 3px 0 rgba(60,30,10,0.18)",
+          borderRadius:"2px",
+        }}>{ch}</span>
+      );
+    })}
+    {englishName && <p style={{ width:"100%", textAlign:"center", fontFamily:"'Playfair Display',serif", fontSize:"13px", color:"rgba(139,0,0,0.5)", letterSpacing:"3px", marginTop:"6px" }}>{englishName}</p>}
+  </div>
+)}
+            
 
           {/* Ransom title */}
           <div style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", gap:"5px", marginBottom:"12px" }}>
