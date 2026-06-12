@@ -124,7 +124,7 @@ function RansomTitle({ text, dynasty }: { text: string; dynasty: DynastyTone }) 
   // Split into words to prevent awkward wrapping
   const words = text.split(" ");
   return (
-    <h1 style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "10px", margin: 0, rowGap: "8px" }}>
+    <h1 style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "15px", margin: 0, rowGap: "8px" }}>
       {words.map((word, wi) => (
         <span key={wi} style={{ display: "flex", gap: "4px" }}>
           {word.split("").map((ch, i) => {
