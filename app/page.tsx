@@ -600,127 +600,131 @@ export default function InkBookHome() {
 
               </div>{/* end front */}
 
-              {/* BACK of cover — Polaroid photos */}
+              {/* BACK of cover — Journal page with notes, ink stains, lantern polaroid */}
               <div style={{ position:'absolute', inset:0, background:'linear-gradient(145deg,#EDD9A8,#F5E8C8)', borderRadius:'3px 6px 6px 3px', backfaceVisibility:'hidden', transform:'rotateY(180deg)', overflow:'hidden' }}>
-                {/* Aged paper texture */}
-                <div style={{ position:'absolute', inset:0, backgroundImage:'repeating-linear-gradient(0deg,transparent,transparent 27px,rgba(139,0,0,0.04) 27px,rgba(139,0,0,0.04) 28px)', pointerEvents:'none' }}/>
-                <div style={{ position:'absolute', fontFamily:"'Noto Serif SC',serif", fontSize:'80px', color:'rgba(139,0,0,0.04)', bottom:'10px', right:'10px', lineHeight:1 }}>墨</div>
+                {/* Lined paper background */}
+                <div style={{ position:'absolute', inset:0, backgroundImage:'repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(139,0,0,0.07) 19px,rgba(139,0,0,0.07) 20px)', pointerEvents:'none' }}/>
 
-                {/* Polaroid 1 — Great Wall (top left, tilted) */}
-                <div style={{ position:'absolute', top:'18px', left:'12px', transform:'rotate(-6deg)', background:'#FFF8F0', padding:'5px 5px 22px 5px', boxShadow:'2px 3px 8px rgba(0,0,0,0.22)', width:'96px' }}>
-                  <div style={{ width:'86px', height:'64px', background:'linear-gradient(135deg,#8B7355,#C4A882,#6B8B6B)', position:'relative', overflow:'hidden' }}>
-                    {/* Great Wall sketch */}
-                    <svg width="86" height="64" viewBox="0 0 86 64">
-                      <rect x="0" y="0" width="86" height="64" fill="#B8A882"/>
-                      <path d="M0,45 Q20,30 43,35 Q65,40 86,28" fill="none" stroke="#6B5535" strokeWidth="2"/>
-                      <rect x="5" y="38" width="8" height="12" fill="#8B7355" stroke="#6B5535" strokeWidth="0.8"/>
-                      <rect x="15" y="34" width="6" height="10" fill="#8B7355" stroke="#6B5535" strokeWidth="0.8"/>
-                      <rect x="23" y="32" width="8" height="12" fill="#8B7355" stroke="#6B5535" strokeWidth="0.8"/>
-                      <rect x="33" y="30" width="6" height="10" fill="#8B7355" stroke="#6B5535" strokeWidth="0.8"/>
-                      <rect x="41" y="28" width="8" height="14" fill="#8B7355" stroke="#6B5535" strokeWidth="0.8"/>
-                      <rect x="51" y="26" width="6" height="10" fill="#8B7355" stroke="#6B5535" strokeWidth="0.8"/>
-                      <rect x="59" y="24" width="8" height="12" fill="#8B7355" stroke="#6B5535" strokeWidth="0.8"/>
-                      <rect x="69" y="22" width="6" height="10" fill="#8B7355" stroke="#6B5535" strokeWidth="0.8"/>
-                      <path d="M0,55 Q43,50 86,45 L86,64 L0,64Z" fill="#6B8B4A" opacity="0.6"/>
-                      <path d="M0,30 Q20,20 43,25 Q65,20 86,15 L86,0 L0,0Z" fill="#8BB8D4" opacity="0.7"/>
-                    </svg>
+                {/* BIG INK STAINS — underneath everything */}
+                <svg style={{ position:'absolute', inset:0, pointerEvents:'none' }} width="340" height="420" viewBox="0 0 340 420">
+                  {/* Large splatter top left */}
+                  <ellipse cx="55" cy="70" rx="38" ry="28" fill="rgba(15,10,5,0.09)" transform="rotate(-15,55,70)"/>
+                  <ellipse cx="42" cy="58" rx="18" ry="12" fill="rgba(15,10,5,0.07)" transform="rotate(10,42,58)"/>
+                  <circle cx="85" cy="52" r="6" fill="rgba(15,10,5,0.06)"/>
+                  <circle cx="92" cy="65" r="4" fill="rgba(15,10,5,0.05)"/>
+                  <circle cx="28" cy="85" r="5" fill="rgba(15,10,5,0.05)"/>
+                  <circle cx="72" cy="88" r="3" fill="rgba(15,10,5,0.04)"/>
+                  {/* Ink drip from top stain */}
+                  <path d="M55,96 Q54,108 56,118 Q57,122 55,126" fill="none" stroke="rgba(15,10,5,0.06)" strokeWidth="3" strokeLinecap="round"/>
+
+                  {/* Medium splatter right side */}
+                  <ellipse cx="268" cy="155" rx="28" ry="22" fill="rgba(15,10,5,0.08)" transform="rotate(20,268,155)"/>
+                  <ellipse cx="285" cy="140" rx="12" ry="8" fill="rgba(15,10,5,0.06)"/>
+                  <circle cx="248" cy="148" r="5" fill="rgba(15,10,5,0.05)"/>
+                  <circle cx="255" cy="172" r="4" fill="rgba(15,10,5,0.04)"/>
+                  <circle cx="290" cy="168" r="6" fill="rgba(15,10,5,0.05)"/>
+
+                  {/* Large splatter center-bottom */}
+                  <ellipse cx="160" cy="310" rx="45" ry="32" fill="rgba(15,10,5,0.07)" transform="rotate(5,160,310)"/>
+                  <ellipse cx="140" cy="295" rx="20" ry="14" fill="rgba(15,10,5,0.06)"/>
+                  <circle cx="195" cy="298" r="8" fill="rgba(15,10,5,0.05)"/>
+                  <circle cx="178" cy="335" r="5" fill="rgba(15,10,5,0.04)"/>
+                  <circle cx="130" cy="322" r="4" fill="rgba(15,10,5,0.04)"/>
+                  <circle cx="205" cy="318" r="3" fill="rgba(15,10,5,0.04)"/>
+
+                  {/* Ink brush strokes */}
+                  <path d="M10,200 Q40,185 70,195 Q90,200 80,210" fill="none" stroke="rgba(15,10,5,0.1)" strokeWidth="4" strokeLinecap="round"/>
+                  <path d="M260,230 Q290,218 320,225 Q335,230 325,240" fill="none" stroke="rgba(15,10,5,0.09)" strokeWidth="3.5" strokeLinecap="round"/>
+                  <path d="M100,380 Q130,370 155,378" fill="none" stroke="rgba(15,10,5,0.08)" strokeWidth="3" strokeLinecap="round"/>
+
+                  {/* Small ink dots scattered */}
+                  {[[20,140],[45,160],[300,95],[315,110],[180,180],[200,195],[85,260],[100,275],[240,360],[260,375]].map(([x,y],i) => (
+                    <circle key={i} cx={x} cy={y} r={i%3===0?3:i%3===1?2:1.5} fill="rgba(15,10,5,0.06)"/>
+                  ))}
+                </svg>
+
+                {/* INK BRUSH STROKE decorations */}
+                <svg style={{ position:'absolute', top:'8px', right:'8px', pointerEvents:'none' }} width="80" height="60" viewBox="0 0 80 60" opacity="0.18">
+                  <path d="M5,50 Q20,10 40,5 Q60,2 75,15" fill="none" stroke="#1A0A00" strokeWidth="5" strokeLinecap="round"/>
+                  <path d="M5,50 Q15,45 40,42 Q60,40 75,15" fill="none" stroke="#1A0A00" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
+                </svg>
+
+                {/* RED WAX SEAL */}
+                <svg style={{ position:'absolute', top:'14px', left:'14px', pointerEvents:'none' }} width="48" height="48" viewBox="0 0 48 48" opacity="0.85">
+                  <path d="M24,2 C30,0 40,4 44,12 C48,20 48,32 44,38 C40,44 30,48 22,46 C12,44 4,36 2,26 C0,16 4,6 10,3 C14,0 18,4 24,2Z" fill="#8B0000"/>
+                  <circle cx="23" cy="24" r="16" fill="none" stroke="rgba(212,175,55,0.5)" strokeWidth="1.5"/>
+                  <text x="23" y="29" fontFamily="'Noto Serif SC',serif" fontSize="16" fill="#D4AF37" textAnchor="middle" fontWeight="700">福</text>
+                </svg>
+
+                {/* STICKY NOTE 1 — 你好！ (cream/yellow, top area) */}
+                <div style={{ position:'absolute', top:'68px', left:'18px', transform:'rotate(-4deg)' }}>
+                  {/* Washi tape top */}
+                  <div style={{ position:'absolute', top:'-7px', left:'10px', width:'44px', height:'10px', background:'repeating-linear-gradient(90deg,rgba(212,175,55,0.55) 0px,rgba(212,175,55,0.55) 8px,rgba(180,140,20,0.4) 8px,rgba(180,140,20,0.4) 16px)', borderRadius:'1px', zIndex:2 }}/>
+                  <div style={{ background:'#FEFBD0', padding:'10px 12px 12px', boxShadow:'2px 3px 6px rgba(0,0,0,0.18)', minWidth:'80px' }}>
+                    <p style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'18px', color:'#3A2A1A', margin:0, lineHeight:1.3, textAlign:'center' }}>你好！</p>
+                    <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'9px', color:'rgba(90,58,26,0.6)', margin:'4px 0 0', textAlign:'center', fontStyle:'italic' }}>Hello!</p>
                   </div>
-                  <p style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'7px', color:'#5A3A1A', textAlign:'center', margin:'4px 0 0', letterSpacing:'0.5px' }}>长城</p>
                 </div>
 
-                {/* Polaroid 2 — Tea ceremony (top right, tilted other way) */}
-                <div style={{ position:'absolute', top:'12px', right:'10px', transform:'rotate(5deg)', background:'#FFF8F0', padding:'5px 5px 22px 5px', boxShadow:'2px 3px 8px rgba(0,0,0,0.22)', width:'88px' }}>
-                  <div style={{ width:'78px', height:'58px', background:'#C4A882', position:'relative', overflow:'hidden' }}>
-                    <svg width="78" height="58" viewBox="0 0 78 58">
-                      <rect x="0" y="0" width="78" height="58" fill="#D4B896"/>
-                      {/* Tea pot */}
-                      <ellipse cx="35" cy="35" rx="18" ry="14" fill="#8B4513" stroke="#5A2D0C" strokeWidth="1"/>
-                      <path d="M17,30 Q10,30 10,35 Q10,40 17,38" fill="none" stroke="#5A2D0C" strokeWidth="1.5"/>
-                      <ellipse cx="35" cy="22" rx="10" ry="4" fill="#C4832A" stroke="#5A2D0C" strokeWidth="1"/>
-                      <circle cx="35" cy="18" r="3" fill="#8B4513" stroke="#5A2D0C" strokeWidth="0.8"/>
-                      <line x1="35" y1="15" x2="35" y2="8" stroke="#5A2D0C" strokeWidth="1"/>
-                      {/* Tea cups */}
-                      <ellipse cx="16" cy="50" rx="7" ry="4" fill="#C4832A" stroke="#5A2D0C" strokeWidth="0.8"/>
-                      <ellipse cx="16" cy="47" rx="7" ry="4" fill="#D4A060" stroke="#5A2D0C" strokeWidth="0.8"/>
-                      <ellipse cx="58" cy="50" rx="7" ry="4" fill="#C4832A" stroke="#5A2D0C" strokeWidth="0.8"/>
-                      <ellipse cx="58" cy="47" rx="7" ry="4" fill="#D4A060" stroke="#5A2D0C" strokeWidth="0.8"/>
-                      {/* Steam */}
-                      <path d="M30,20 Q28,14 30,8" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="1" strokeLinecap="round"/>
-                      <path d="M36,19 Q34,13 36,7" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="1" strokeLinecap="round"/>
-                      <path d="M42,20 Q40,14 42,8" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="1" strokeLinecap="round"/>
-                    </svg>
+                {/* STICKY NOTE 2 — 加油！(pink, right side) */}
+                <div style={{ position:'absolute', top:'155px', right:'14px', transform:'rotate(5deg)' }}>
+                  {/* Washi tape */}
+                  <div style={{ position:'absolute', top:'-7px', left:'8px', width:'40px', height:'10px', background:'repeating-linear-gradient(90deg,rgba(196,30,30,0.45) 0px,rgba(196,30,30,0.45) 7px,rgba(160,0,0,0.3) 7px,rgba(160,0,0,0.3) 14px)', borderRadius:'1px', zIndex:2 }}/>
+                  <div style={{ background:'#FFD6D6', padding:'10px 12px 12px', boxShadow:'2px 3px 6px rgba(0,0,0,0.18)', minWidth:'76px' }}>
+                    <p style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'18px', color:'#8B0000', margin:0, lineHeight:1.3, textAlign:'center' }}>加油！</p>
+                    <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'9px', color:'rgba(139,0,0,0.6)', margin:'4px 0 0', textAlign:'center', fontStyle:'italic' }}>Keep going!</p>
                   </div>
-                  <p style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'7px', color:'#5A3A1A', textAlign:'center', margin:'4px 0 0', letterSpacing:'0.5px' }}>茶道</p>
                 </div>
 
-                {/* Polaroid 3 — Rice terraces (middle left) */}
-                <div style={{ position:'absolute', top:'145px', left:'8px', transform:'rotate(4deg)', background:'#FFF8F0', padding:'5px 5px 22px 5px', boxShadow:'2px 3px 8px rgba(0,0,0,0.22)', width:'100px' }}>
-                  <div style={{ width:'90px', height:'66px', overflow:'hidden' }}>
-                    <svg width="90" height="66" viewBox="0 0 90 66">
-                      <rect x="0" y="0" width="90" height="66" fill="#8BAA6A"/>
-                      {[0,1,2,3,4,5].map(i => (
-                        <path key={i} d={`M0,${10+i*10} Q45,${5+i*10} 90,${10+i*10} L90,${18+i*10} Q45,${13+i*10} 0,${18+i*10}Z`}
-                          fill={i%2===0?'#6B9A4A':'#8BAA6A'} stroke="#4A7A2A" strokeWidth="0.5"/>
-                      ))}
-                      <path d="M0,0 Q45,-5 90,0 L90,12 Q45,7 0,12Z" fill="#8BB8D4" opacity="0.8"/>
-                    </svg>
+                {/* STICKY NOTE 3 — 美丽 (sage green, left middle) */}
+                <div style={{ position:'absolute', top:'245px', left:'12px', transform:'rotate(3deg)' }}>
+                  <div style={{ position:'absolute', top:'-7px', left:'12px', width:'38px', height:'10px', background:'repeating-linear-gradient(90deg,rgba(61,107,79,0.5) 0px,rgba(61,107,79,0.5) 7px,rgba(45,80,58,0.35) 7px,rgba(45,80,58,0.35) 14px)', borderRadius:'1px', zIndex:2 }}/>
+                  <div style={{ background:'#D4EDD8', padding:'10px 12px 12px', boxShadow:'2px 3px 6px rgba(0,0,0,0.18)', minWidth:'74px' }}>
+                    <p style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'18px', color:'#2D5A3A', margin:0, lineHeight:1.3, textAlign:'center' }}>美丽</p>
+                    <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'9px', color:'rgba(45,90,58,0.6)', margin:'4px 0 0', textAlign:'center', fontStyle:'italic' }}>Beautiful</p>
                   </div>
-                  <p style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'7px', color:'#5A3A1A', textAlign:'center', margin:'4px 0 0', letterSpacing:'0.5px' }}>梯田</p>
                 </div>
 
-                {/* Polaroid 4 — Dumplings (middle right) */}
-                <div style={{ position:'absolute', top:'138px', right:'8px', transform:'rotate(-5deg)', background:'#FFF8F0', padding:'5px 5px 22px 5px', boxShadow:'2px 3px 8px rgba(0,0,0,0.22)', width:'92px' }}>
-                  <div style={{ width:'82px', height:'62px', overflow:'hidden' }}>
-                    <svg width="82" height="62" viewBox="0 0 82 62">
-                      <rect x="0" y="0" width="82" height="62" fill="#F5E8C8"/>
-                      {/* Steamer basket */}
-                      <ellipse cx="41" cy="50" rx="32" ry="10" fill="#C4832A" stroke="#8B4513" strokeWidth="1"/>
-                      <rect x="9" y="35" width="64" height="15" fill="#D4A060" stroke="#8B4513" strokeWidth="1"/>
-                      <ellipse cx="41" cy="35" rx="32" ry="10" fill="#E8B870" stroke="#8B4513" strokeWidth="1"/>
-                      {/* Dumplings */}
-                      <ellipse cx="25" cy="33" rx="10" ry="7" fill="#FFF8F0" stroke="#D4A060" strokeWidth="1"/>
-                      <path d="M16,33 Q25,24 34,33" fill="none" stroke="#D4A060" strokeWidth="1"/>
-                      <ellipse cx="41" cy="31" rx="10" ry="7" fill="#FFF8F0" stroke="#D4A060" strokeWidth="1"/>
-                      <path d="M32,31 Q41,22 50,31" fill="none" stroke="#D4A060" strokeWidth="1"/>
-                      <ellipse cx="57" cy="33" rx="10" ry="7" fill="#FFF8F0" stroke="#D4A060" strokeWidth="1"/>
-                      <path d="M48,33 Q57,24 66,33" fill="none" stroke="#D4A060" strokeWidth="1"/>
-                      {/* Steam wisps */}
-                      <path d="M25,26 Q23,20 25,14" fill="none" stroke="rgba(180,180,180,0.6)" strokeWidth="1" strokeLinecap="round"/>
-                      <path d="M41,24 Q39,18 41,12" fill="none" stroke="rgba(180,180,180,0.6)" strokeWidth="1" strokeLinecap="round"/>
-                      <path d="M57,26 Q55,20 57,14" fill="none" stroke="rgba(180,180,180,0.6)" strokeWidth="1" strokeLinecap="round"/>
-                    </svg>
+                {/* TAG — 墨书 with string */}
+                <div style={{ position:'absolute', top:'130px', left:'50%', transform:'translateX(-50%) rotate(-6deg)' }}>
+                  <svg width="6" height="20" viewBox="0 0 6 20" style={{ display:'block', margin:'0 auto' }}>
+                    <line x1="3" y1="0" x2="3" y2="20" stroke="#8B4513" strokeWidth="1" strokeDasharray="2,2"/>
+                  </svg>
+                  <div style={{ background:'#FFF8F0', border:'1.5px solid rgba(139,0,0,0.3)', padding:'5px 10px', borderRadius:'3px', boxShadow:'1px 2px 4px rgba(0,0,0,0.15)', textAlign:'center' }}>
+                    <p style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'13px', color:'#8B0000', margin:0, letterSpacing:'3px' }}>墨书</p>
+                    <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'7px', color:'rgba(139,0,0,0.5)', margin:'2px 0 0', letterSpacing:'1px' }}>INKBOOK</p>
                   </div>
-                  <p style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'7px', color:'#5A3A1A', textAlign:'center', margin:'4px 0 0', letterSpacing:'0.5px' }}>饺子</p>
                 </div>
 
-                {/* Polaroid 5 — Lantern festival (bottom, slightly overlapping) */}
-                <div style={{ position:'absolute', bottom:'30px', left:'50%', transform:'translateX(-50%) rotate(2deg)', background:'#FFF8F0', padding:'5px 5px 22px 5px', boxShadow:'2px 3px 8px rgba(0,0,0,0.22)', width:'106px' }}>
-                  <div style={{ width:'96px', height:'70px', overflow:'hidden' }}>
-                    <svg width="96" height="70" viewBox="0 0 96 70">
-                      <rect x="0" y="0" width="96" height="70" fill="#1A0A2A"/>
-                      {/* Lanterns */}
-                      {[[20,25,'#CC0000'],[48,18,'#D4AF37'],[76,28,'#CC0000'],[34,45,'#D4849A'],[62,42,'#CC0000']].map(([x,y,c],i) => (
+                {/* CHINESE PATTERN WASHI TAPE STRIP */}
+                <div style={{ position:'absolute', top:'218px', left:0, right:0, height:'16px', background:'repeating-linear-gradient(90deg,rgba(139,0,0,0.18) 0px,rgba(139,0,0,0.18) 2px,transparent 2px,transparent 8px)', transform:'rotate(-1deg)', zIndex:1 }}/>
+                <div style={{ position:'absolute', top:'220px', left:0, right:0, height:'12px', background:'rgba(212,175,55,0.15)', transform:'rotate(-1deg)', zIndex:0 }}/>
+
+                {/* LANTERN FESTIVAL POLAROID — bottom center */}
+                <div style={{ position:'absolute', bottom:'22px', left:'50%', transform:'translateX(-50%) rotate(2deg)', background:'#FFF8F0', padding:'5px 5px 22px 5px', boxShadow:'2px 4px 10px rgba(0,0,0,0.25)', width:'110px', zIndex:3 }}>
+                  {/* Washi tape on polaroid */}
+                  <div style={{ position:'absolute', top:'-6px', left:'28px', width:'48px', height:'10px', background:'repeating-linear-gradient(90deg,rgba(27,75,122,0.5) 0px,rgba(27,75,122,0.5) 8px,rgba(20,55,100,0.35) 8px,rgba(20,55,100,0.35) 16px)', borderRadius:'1px' }}/>
+                  <div style={{ width:'100px', height:'75px', overflow:'hidden' }}>
+                    <svg width="100" height="75" viewBox="0 0 100 75">
+                      <rect x="0" y="0" width="100" height="75" fill="#1A0A2A"/>
+                      {[[18,22,'#CC0000'],[50,16,'#D4AF37'],[82,24,'#CC0000'],[34,46,'#D4849A'],[66,42,'#CC0000']].map(([x,y,c],i) => (
                         <g key={i}>
                           <line x1={x as number} y1={0} x2={x as number} y2={(y as number)-8} stroke="#C4A030" strokeWidth="0.8"/>
-                          <ellipse cx={x as number} cy={(y as number)+10} rx="8" ry="12" fill={c as string} opacity="0.9"/>
-                          <ellipse cx={x as number} cy={(y as number)+2} rx="5" ry="3" fill="rgba(255,220,0,0.4)"/>
-                          <line x1={(x as number)-4} y1={(y as number)+22} x2={(x as number)-3} y2={(y as number)+30} stroke={c as string} strokeWidth="1"/>
-                          <line x1={x as number} y1={(y as number)+22} x2={x as number} y2={(y as number)+31} stroke="#D4AF37" strokeWidth="1"/>
-                          <line x1={(x as number)+4} y1={(y as number)+22} x2={(x as number)+3} y2={(y as number)+30} stroke={c as string} strokeWidth="1"/>
+                          <ellipse cx={x as number} cy={(y as number)+10} rx="9" ry="13" fill={c as string} opacity="0.9"/>
+                          <ellipse cx={x as number} cy={(y as number)+2} rx="6" ry="4" fill="rgba(255,220,0,0.35)"/>
+                          <line x1={(x as number)-4} y1={(y as number)+23} x2={(x as number)-3} y2={(y as number)+32} stroke={c as string} strokeWidth="1"/>
+                          <line x1={x as number} y1={(y as number)+23} x2={x as number} y2={(y as number)+33} stroke="#D4AF37" strokeWidth="1"/>
+                          <line x1={(x as number)+4} y1={(y as number)+23} x2={(x as number)+3} y2={(y as number)+32} stroke={c as string} strokeWidth="1"/>
                         </g>
                       ))}
-                      {/* Stars */}
-                      {[[10,8],[30,5],[60,10],[80,6],[90,15],[5,20],[45,3]].map(([x,y],i) => (
-                        <circle key={i} cx={x} cy={y} r="1" fill="white" opacity="0.8"/>
+                      {[[8,6],[25,4],[55,8],[75,5],[92,12],[4,18],[45,2],[88,20]].map(([x,y],i) => (
+                        <circle key={i} cx={x} cy={y} r="1" fill="white" opacity="0.7"/>
                       ))}
                     </svg>
                   </div>
-                  <p style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'7px', color:'#5A3A1A', textAlign:'center', margin:'4px 0 0', letterSpacing:'0.5px' }}>灯节</p>
+                  <p style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'8px', color:'#5A3A1A', textAlign:'center', margin:'5px 0 0', letterSpacing:'1px' }}>灯节</p>
                 </div>
 
-                {/* Washi tape decorations on polaroids */}
-                <div style={{ position:'absolute', top:'24px', left:'38px', width:'30px', height:'8px', background:'rgba(212,175,55,0.5)', transform:'rotate(-30deg)', borderRadius:'1px' }}/>
-                <div style={{ position:'absolute', top:'150px', right:'50px', width:'28px', height:'7px', background:'rgba(196,30,30,0.4)', transform:'rotate(15deg)', borderRadius:'1px' }}/>
               </div>
 
             </div>{/* end cover */}
