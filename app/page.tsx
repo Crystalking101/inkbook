@@ -600,129 +600,206 @@ export default function InkBookHome() {
 
               </div>{/* end front */}
 
-              {/* BACK of cover — Journal page with notes, ink stains, lantern polaroid */}
-              <div style={{ position:'absolute', inset:0, background:'linear-gradient(145deg,#EDD9A8,#F5E8C8)', borderRadius:'3px 6px 6px 3px', backfaceVisibility:'hidden', transform:'rotateY(180deg)', overflow:'hidden' }}>
-                {/* Lined paper background */}
-                <div style={{ position:'absolute', inset:0, backgroundImage:'repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(139,0,0,0.07) 19px,rgba(139,0,0,0.07) 20px)', pointerEvents:'none' }}/>
+              {/* BACK of cover — Full junk journal left page */}
+              <div style={{ position:'absolute', inset:0, background:'linear-gradient(160deg,#F0E0B8,#EDD9A8,#E8D09A)', borderRadius:'3px 6px 6px 3px', backfaceVisibility:'hidden', transform:'rotateY(180deg)', overflow:'hidden' }}>
+                {/* Lined paper */}
+                <div style={{ position:'absolute', inset:0, backgroundImage:'repeating-linear-gradient(0deg,transparent,transparent 19px,rgba(139,0,0,0.06) 19px,rgba(139,0,0,0.06) 20px)', pointerEvents:'none' }}/>
+                <div style={{ position:'absolute', top:0, bottom:0, left:'28px', width:'1px', background:'rgba(196,30,30,0.18)' }}/>
 
-                {/* BIG INK STAINS — underneath everything */}
-                <svg style={{ position:'absolute', inset:0, pointerEvents:'none' }} width="340" height="420" viewBox="0 0 340 420">
-                  {/* Large splatter top left */}
-                  <ellipse cx="55" cy="70" rx="38" ry="28" fill="rgba(15,10,5,0.09)" transform="rotate(-15,55,70)"/>
-                  <ellipse cx="42" cy="58" rx="18" ry="12" fill="rgba(15,10,5,0.07)" transform="rotate(10,42,58)"/>
-                  <circle cx="85" cy="52" r="6" fill="rgba(15,10,5,0.06)"/>
-                  <circle cx="92" cy="65" r="4" fill="rgba(15,10,5,0.05)"/>
-                  <circle cx="28" cy="85" r="5" fill="rgba(15,10,5,0.05)"/>
-                  <circle cx="72" cy="88" r="3" fill="rgba(15,10,5,0.04)"/>
-                  {/* Ink drip from top stain */}
-                  <path d="M55,96 Q54,108 56,118 Q57,122 55,126" fill="none" stroke="rgba(15,10,5,0.06)" strokeWidth="3" strokeLinecap="round"/>
-
-                  {/* Medium splatter right side */}
-                  <ellipse cx="268" cy="155" rx="28" ry="22" fill="rgba(15,10,5,0.08)" transform="rotate(20,268,155)"/>
-                  <ellipse cx="285" cy="140" rx="12" ry="8" fill="rgba(15,10,5,0.06)"/>
-                  <circle cx="248" cy="148" r="5" fill="rgba(15,10,5,0.05)"/>
-                  <circle cx="255" cy="172" r="4" fill="rgba(15,10,5,0.04)"/>
-                  <circle cx="290" cy="168" r="6" fill="rgba(15,10,5,0.05)"/>
-
-                  {/* Large splatter center-bottom */}
-                  <ellipse cx="160" cy="310" rx="45" ry="32" fill="rgba(15,10,5,0.07)" transform="rotate(5,160,310)"/>
-                  <ellipse cx="140" cy="295" rx="20" ry="14" fill="rgba(15,10,5,0.06)"/>
-                  <circle cx="195" cy="298" r="8" fill="rgba(15,10,5,0.05)"/>
-                  <circle cx="178" cy="335" r="5" fill="rgba(15,10,5,0.04)"/>
-                  <circle cx="130" cy="322" r="4" fill="rgba(15,10,5,0.04)"/>
-                  <circle cx="205" cy="318" r="3" fill="rgba(15,10,5,0.04)"/>
-
-                  {/* Ink brush strokes */}
-                  <path d="M10,200 Q40,185 70,195 Q90,200 80,210" fill="none" stroke="rgba(15,10,5,0.1)" strokeWidth="4" strokeLinecap="round"/>
-                  <path d="M260,230 Q290,218 320,225 Q335,230 325,240" fill="none" stroke="rgba(15,10,5,0.09)" strokeWidth="3.5" strokeLinecap="round"/>
-                  <path d="M100,380 Q130,370 155,378" fill="none" stroke="rgba(15,10,5,0.08)" strokeWidth="3" strokeLinecap="round"/>
-
-                  {/* Small ink dots scattered */}
-                  {[[20,140],[45,160],[300,95],[315,110],[180,180],[200,195],[85,260],[100,275],[240,360],[260,375]].map(([x,y],i) => (
-                    <circle key={i} cx={x} cy={y} r={i%3===0?3:i%3===1?2:1.5} fill="rgba(15,10,5,0.06)"/>
-                  ))}
+                {/* BIG INK STAINS */}
+                <svg style={{ position:'absolute', inset:0, pointerEvents:'none', width:'100%', height:'100%' }} viewBox="0 0 340 420" preserveAspectRatio="none">
+                  <ellipse cx="60" cy="80" rx="42" ry="30" fill="rgba(10,5,0,0.08)" transform="rotate(-12,60,80)"/>
+                  <ellipse cx="45" cy="65" rx="20" ry="13" fill="rgba(10,5,0,0.06)" transform="rotate(8,45,65)"/>
+                  <circle cx="95" cy="58" r="7" fill="rgba(10,5,0,0.05)"/>
+                  <circle cx="30" cy="98" r="5" fill="rgba(10,5,0,0.04)"/>
+                  <path d="M60,108 Q59,122 61,135" fill="none" stroke="rgba(10,5,0,0.05)" strokeWidth="3.5" strokeLinecap="round"/>
+                  <ellipse cx="270" cy="160" rx="32" ry="24" fill="rgba(10,5,0,0.07)" transform="rotate(18,270,160)"/>
+                  <circle cx="250" cy="150" r="6" fill="rgba(10,5,0,0.05)"/>
+                  <circle cx="295" cy="172" r="5" fill="rgba(10,5,0,0.04)"/>
+                  <ellipse cx="155" cy="315" rx="48" ry="34" fill="rgba(10,5,0,0.07)" transform="rotate(4,155,315)"/>
+                  <circle cx="190" cy="300" r="9" fill="rgba(10,5,0,0.05)"/>
+                  <circle cx="125" cy="328" r="5" fill="rgba(10,5,0,0.04)"/>
+                  <path d="M8,205 Q38,190 68,200 Q88,206 78,216" fill="none" stroke="rgba(10,5,0,0.09)" strokeWidth="4" strokeLinecap="round"/>
+                  <path d="M255,240 Q285,228 318,235" fill="none" stroke="rgba(10,5,0,0.08)" strokeWidth="3" strokeLinecap="round"/>
                 </svg>
 
-                {/* INK BRUSH STROKE decorations */}
-                <svg style={{ position:'absolute', top:'8px', right:'8px', pointerEvents:'none' }} width="80" height="60" viewBox="0 0 80 60" opacity="0.18">
-                  <path d="M5,50 Q20,10 40,5 Q60,2 75,15" fill="none" stroke="#1A0A00" strokeWidth="5" strokeLinecap="round"/>
-                  <path d="M5,50 Q15,45 40,42 Q60,40 75,15" fill="none" stroke="#1A0A00" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
+                {/* HANFU GIRL */}
+                <svg style={{ position:'absolute', right:'-2px', bottom:'80px', pointerEvents:'none' }} width="100" height="180" viewBox="0 0 100 180">
+                  <ellipse cx="50" cy="175" rx="22" ry="5" fill="rgba(0,0,0,0.1)"/>
+                  <path d="M30,95 Q15,120 10,155 Q20,160 50,162 Q80,160 90,155 Q85,120 70,95Z" fill="#D4849A"/>
+                  <path d="M35,95 Q22,118 18,148 Q30,155 50,156 Q70,155 82,148 Q78,118 65,95Z" fill="#E8A0B4" opacity="0.6"/>
+                  <rect x="35" y="90" width="30" height="8" rx="3" fill="#8B0000"/>
+                  <path d="M45,98 Q50,108 55,98" fill="none" stroke="#8B0000" strokeWidth="2"/>
+                  <path d="M32,68 Q10,75 5,90 Q15,95 30,85 Q34,78 36,72Z" fill="#D4849A"/>
+                  <path d="M68,68 Q90,75 95,90 Q85,95 70,85 Q66,78 64,72Z" fill="#D4849A"/>
+                  <path d="M38,65 Q50,72 62,65 Q58,58 50,55 Q42,58 38,65Z" fill="#FFF8F0" stroke="#E0C8B0" strokeWidth="0.8"/>
+                  <path d="M36,55 Q36,90 38,95 Q44,98 50,98 Q56,98 62,95 Q64,90 64,55Z" fill="#E8A0B4"/>
+                  <rect x="45" y="45" width="10" height="12" rx="5" fill="#FDDBB4"/>
+                  <ellipse cx="50" cy="36" rx="14" ry="16" fill="#FDDBB4"/>
+                  <ellipse cx="44" cy="34" rx="2.5" ry="3" fill="#4A2800" opacity="0.85"/>
+                  <ellipse cx="56" cy="34" rx="2.5" ry="3" fill="#4A2800" opacity="0.85"/>
+                  <circle cx="44.5" cy="33" r="1" fill="white" opacity="0.6"/>
+                  <circle cx="56.5" cy="33" r="1" fill="white" opacity="0.6"/>
+                  <path d="M41,29 Q44,27 47,29" fill="none" stroke="#4A2800" strokeWidth="1.2" strokeLinecap="round"/>
+                  <path d="M53,29 Q56,27 59,29" fill="none" stroke="#4A2800" strokeWidth="1.2" strokeLinecap="round"/>
+                  <path d="M48,38 Q50,40 52,38" fill="none" stroke="#C4906A" strokeWidth="0.8"/>
+                  <path d="M45,43 Q50,46 55,43" fill="#E87A7A" strokeWidth="0"/>
+                  <path d="M46,43 Q50,41 54,43" fill="none" stroke="#C45A5A" strokeWidth="0.8"/>
+                  <ellipse cx="41" cy="40" rx="4" ry="2.5" fill="#FFB0A0" opacity="0.4"/>
+                  <ellipse cx="59" cy="40" rx="4" ry="2.5" fill="#FFB0A0" opacity="0.4"/>
+                  <path d="M36,30 Q35,15 50,12 Q65,15 64,30 Q62,20 50,18 Q38,20 36,30Z" fill="#1A0A00"/>
+                  <path d="M38,20 Q50,10 62,20 Q58,8 50,6 Q42,8 38,20Z" fill="#1A0A00"/>
+                  <ellipse cx="50" cy="12" rx="10" ry="7" fill="#1A0A00"/>
+                  <ellipse cx="50" cy="10" rx="7" ry="5" fill="#2A1000"/>
+                  <circle cx="38" cy="14" r="4" fill="#F4A0B0"/>
+                  <circle cx="36" cy="12" r="3" fill="#F4C0C8"/>
+                  <circle cx="40" cy="10" r="3" fill="#F4A0B0"/>
+                  <circle cx="38" cy="14" r="1.5" fill="#FFD700"/>
+                  <circle cx="58" cy="10" r="2.5" fill="white" stroke="#D4AF37" strokeWidth="0.5"/>
+                  <circle cx="62" cy="14" r="2" fill="white" stroke="#D4AF37" strokeWidth="0.5"/>
+                  <line x1="42" y1="16" x2="36" y2="28" stroke="#D4AF37" strokeWidth="1"/>
+                  <circle cx="36" cy="30" r="2.5" fill="#D4AF37"/>
+                  <line x1="36" y1="32" x2="33" y2="42" stroke="#8B0000" strokeWidth="1"/>
+                  <line x1="36" y1="32" x2="36" y2="43" stroke="#D4AF37" strokeWidth="1"/>
+                  <line x1="36" y1="32" x2="39" y2="42" stroke="#8B0000" strokeWidth="1"/>
                 </svg>
 
-                {/* RED WAX SEAL */}
-                <svg style={{ position:'absolute', top:'14px', left:'14px', pointerEvents:'none' }} width="48" height="48" viewBox="0 0 48 48" opacity="0.85">
-                  <path d="M24,2 C30,0 40,4 44,12 C48,20 48,32 44,38 C40,44 30,48 22,46 C12,44 4,36 2,26 C0,16 4,6 10,3 C14,0 18,4 24,2Z" fill="#8B0000"/>
-                  <circle cx="23" cy="24" r="16" fill="none" stroke="rgba(212,175,55,0.5)" strokeWidth="1.5"/>
-                  <text x="23" y="29" fontFamily="'Noto Serif SC',serif" fontSize="16" fill="#D4AF37" textAnchor="middle" fontWeight="700">福</text>
+                {/* BUTTERFLIES */}
+                <svg style={{ position:'absolute', top:'22px', right:'22px', pointerEvents:'none', transform:'rotate(15deg)' }} width="28" height="22" viewBox="0 0 28 22">
+                  <path d="M14,11 Q4,2 2,8 Q0,14 14,11Z" fill="#F4A7B9" stroke="#D4849A" strokeWidth="0.8" opacity="0.85"/>
+                  <path d="M14,11 Q24,2 26,8 Q28,14 14,11Z" fill="#F4C0C8" stroke="#D4849A" strokeWidth="0.8" opacity="0.85"/>
+                  <path d="M14,11 Q5,16 4,20 Q8,22 14,11Z" fill="#D4849A" stroke="#B8607A" strokeWidth="0.8"/>
+                  <path d="M14,11 Q23,16 24,20 Q20,22 14,11Z" fill="#D4849A" stroke="#B8607A" strokeWidth="0.8"/>
+                  <line x1="14" y1="9" x2="11" y2="5" stroke="#5A2A2A" strokeWidth="0.8"/>
+                  <line x1="14" y1="9" x2="17" y2="5" stroke="#5A2A2A" strokeWidth="0.8"/>
+                </svg>
+                <svg style={{ position:'absolute', top:'175px', left:'32px', pointerEvents:'none', transform:'rotate(-10deg)' }} width="24" height="18" viewBox="0 0 24 18">
+                  <path d="M12,9 Q3,1 1,6 Q0,12 12,9Z" fill="#D4AF37" stroke="#B8952A" strokeWidth="0.8" opacity="0.8"/>
+                  <path d="M12,9 Q21,1 23,6 Q24,12 12,9Z" fill="#E8C840" stroke="#B8952A" strokeWidth="0.8" opacity="0.8"/>
+                  <path d="M12,9 Q4,13 3,17 Q7,18 12,9Z" fill="#C4A030" stroke="#B8952A" strokeWidth="0.7"/>
+                  <path d="M12,9 Q20,13 21,17 Q17,18 12,9Z" fill="#C4A030" stroke="#B8952A" strokeWidth="0.7"/>
+                  <line x1="12" y1="7" x2="10" y2="3" stroke="#5A3A00" strokeWidth="0.7"/>
+                  <line x1="12" y1="7" x2="14" y2="3" stroke="#5A3A00" strokeWidth="0.7"/>
+                </svg>
+                <svg style={{ position:'absolute', bottom:'185px', right:'88px', pointerEvents:'none', transform:'rotate(20deg)' }} width="20" height="16" viewBox="0 0 20 16">
+                  <path d="M10,8 Q2,1 1,5 Q0,10 10,8Z" fill="#C8A0D4" stroke="#9A70B0" strokeWidth="0.7" opacity="0.8"/>
+                  <path d="M10,8 Q18,1 19,5 Q20,10 10,8Z" fill="#D4B0E0" stroke="#9A70B0" strokeWidth="0.7" opacity="0.8"/>
+                  <path d="M10,8 Q3,11 3,15 Q6,16 10,8Z" fill="#9A70B0" stroke="#7A50A0" strokeWidth="0.6"/>
+                  <path d="M10,8 Q17,11 17,15 Q14,16 10,8Z" fill="#9A70B0" stroke="#7A50A0" strokeWidth="0.6"/>
+                  <line x1="10" y1="6" x2="8" y2="2" stroke="#3A1A4A" strokeWidth="0.6"/>
+                  <line x1="10" y1="6" x2="12" y2="2" stroke="#3A1A4A" strokeWidth="0.6"/>
                 </svg>
 
-                {/* STICKY NOTE 1 — 你好！ (cream/yellow, top area) */}
-                <div style={{ position:'absolute', top:'68px', left:'18px', transform:'rotate(-4deg)' }}>
-                  {/* Washi tape top */}
-                  <div style={{ position:'absolute', top:'-7px', left:'10px', width:'44px', height:'10px', background:'repeating-linear-gradient(90deg,rgba(212,175,55,0.55) 0px,rgba(212,175,55,0.55) 8px,rgba(180,140,20,0.4) 8px,rgba(180,140,20,0.4) 16px)', borderRadius:'1px', zIndex:2 }}/>
-                  <div style={{ background:'#FEFBD0', padding:'10px 12px 12px', boxShadow:'2px 3px 6px rgba(0,0,0,0.18)', minWidth:'80px' }}>
-                    <p style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'18px', color:'#3A2A1A', margin:0, lineHeight:1.3, textAlign:'center' }}>你好！</p>
-                    <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'9px', color:'rgba(90,58,26,0.6)', margin:'4px 0 0', textAlign:'center', fontStyle:'italic' }}>Hello!</p>
+                {/* WAX SEAL */}
+                <svg style={{ position:'absolute', top:'10px', left:'34px', pointerEvents:'none' }} width="44" height="44" viewBox="0 0 44 44" opacity="0.88">
+                  <path d="M22,2 C28,0 37,4 41,11 C45,18 44,30 40,36 C36,42 27,46 19,44 C10,42 3,34 1,24 C-1,14 3,5 9,2 C13,0 16,4 22,2Z" fill="#8B0000"/>
+                  <circle cx="21" cy="22" r="14" fill="none" stroke="rgba(212,175,55,0.5)" strokeWidth="1.2"/>
+                  <text x="21" y="27" fontFamily="serif" fontSize="14" fill="#D4AF37" textAnchor="middle" fontWeight="700">福</text>
+                </svg>
+
+                {/* STICKY NOTE 1 — 你好 */}
+                <div style={{ position:'absolute', top:'62px', left:'32px', transform:'rotate(-3deg)' }}>
+                  <div style={{ position:'absolute', top:'-7px', left:'8px', width:'44px', height:'9px', background:'repeating-linear-gradient(90deg,rgba(212,175,55,0.6) 0px,rgba(212,175,55,0.6) 8px,rgba(180,140,20,0.45) 8px,rgba(180,140,20,0.45) 16px)', borderRadius:'1px', zIndex:2 }}/>
+                  <div style={{ background:'#FEFBD0', padding:'9px 11px 11px', boxShadow:'2px 3px 6px rgba(0,0,0,0.2)', minWidth:'72px' }}>
+                    <p style={{ fontFamily:"serif", fontSize:'16px', color:'#3A2A1A', margin:0, lineHeight:1.3, textAlign:'center' }}>你好！</p>
+                    <p style={{ fontFamily:"serif", fontSize:'8px', color:'rgba(90,58,26,0.6)', margin:'3px 0 0', textAlign:'center', fontStyle:'italic' }}>Hello!</p>
                   </div>
                 </div>
 
-                {/* STICKY NOTE 2 — 加油！(pink, right side) */}
-                <div style={{ position:'absolute', top:'155px', right:'14px', transform:'rotate(5deg)' }}>
-                  {/* Washi tape */}
-                  <div style={{ position:'absolute', top:'-7px', left:'8px', width:'40px', height:'10px', background:'repeating-linear-gradient(90deg,rgba(196,30,30,0.45) 0px,rgba(196,30,30,0.45) 7px,rgba(160,0,0,0.3) 7px,rgba(160,0,0,0.3) 14px)', borderRadius:'1px', zIndex:2 }}/>
-                  <div style={{ background:'#FFD6D6', padding:'10px 12px 12px', boxShadow:'2px 3px 6px rgba(0,0,0,0.18)', minWidth:'76px' }}>
-                    <p style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'18px', color:'#8B0000', margin:0, lineHeight:1.3, textAlign:'center' }}>加油！</p>
-                    <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'9px', color:'rgba(139,0,0,0.6)', margin:'4px 0 0', textAlign:'center', fontStyle:'italic' }}>Keep going!</p>
+                {/* STICKY NOTE 2 — 加油 */}
+                <div style={{ position:'absolute', top:'148px', right:'106px', transform:'rotate(4deg)' }}>
+                  <div style={{ position:'absolute', top:'-7px', left:'8px', width:'38px', height:'9px', background:'repeating-linear-gradient(90deg,rgba(196,30,30,0.5) 0px,rgba(196,30,30,0.5) 7px,rgba(160,0,0,0.35) 7px,rgba(160,0,0,0.35) 14px)', borderRadius:'1px', zIndex:2 }}/>
+                  <div style={{ background:'#FFD6D6', padding:'9px 11px 11px', boxShadow:'2px 3px 6px rgba(0,0,0,0.2)', minWidth:'68px' }}>
+                    <p style={{ fontFamily:"serif", fontSize:'16px', color:'#8B0000', margin:0, lineHeight:1.3, textAlign:'center' }}>加油！</p>
+                    <p style={{ fontFamily:"serif", fontSize:'8px', color:'rgba(139,0,0,0.6)', margin:'3px 0 0', textAlign:'center', fontStyle:'italic' }}>Keep going!</p>
                   </div>
                 </div>
 
-                {/* STICKY NOTE 3 — 美丽 (sage green, left middle) */}
-                <div style={{ position:'absolute', top:'245px', left:'12px', transform:'rotate(3deg)' }}>
-                  <div style={{ position:'absolute', top:'-7px', left:'12px', width:'38px', height:'10px', background:'repeating-linear-gradient(90deg,rgba(61,107,79,0.5) 0px,rgba(61,107,79,0.5) 7px,rgba(45,80,58,0.35) 7px,rgba(45,80,58,0.35) 14px)', borderRadius:'1px', zIndex:2 }}/>
-                  <div style={{ background:'#D4EDD8', padding:'10px 12px 12px', boxShadow:'2px 3px 6px rgba(0,0,0,0.18)', minWidth:'74px' }}>
-                    <p style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'18px', color:'#2D5A3A', margin:0, lineHeight:1.3, textAlign:'center' }}>美丽</p>
-                    <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'9px', color:'rgba(45,90,58,0.6)', margin:'4px 0 0', textAlign:'center', fontStyle:'italic' }}>Beautiful</p>
+                {/* STICKY NOTE 3 — 美丽 */}
+                <div style={{ position:'absolute', top:'230px', left:'32px', transform:'rotate(2deg)' }}>
+                  <div style={{ position:'absolute', top:'-7px', left:'10px', width:'36px', height:'9px', background:'repeating-linear-gradient(90deg,rgba(61,107,79,0.55) 0px,rgba(61,107,79,0.55) 7px,rgba(45,80,58,0.4) 7px,rgba(45,80,58,0.4) 14px)', borderRadius:'1px', zIndex:2 }}/>
+                  <div style={{ background:'#D4EDD8', padding:'9px 11px 11px', boxShadow:'2px 3px 6px rgba(0,0,0,0.2)', minWidth:'66px' }}>
+                    <p style={{ fontFamily:"serif", fontSize:'16px', color:'#2D5A3A', margin:0, lineHeight:1.3, textAlign:'center' }}>美丽</p>
+                    <p style={{ fontFamily:"serif", fontSize:'8px', color:'rgba(45,90,58,0.6)', margin:'3px 0 0', textAlign:'center', fontStyle:'italic' }}>Beautiful</p>
                   </div>
                 </div>
 
-                {/* TAG — 墨书 with string */}
-                <div style={{ position:'absolute', top:'130px', left:'50%', transform:'translateX(-50%) rotate(-6deg)' }}>
-                  <svg width="6" height="20" viewBox="0 0 6 20" style={{ display:'block', margin:'0 auto' }}>
-                    <line x1="3" y1="0" x2="3" y2="20" stroke="#8B4513" strokeWidth="1" strokeDasharray="2,2"/>
+                {/* STICKY NOTE 4 — 谢谢 torn */}
+                <div style={{ position:'absolute', top:'82px', left:'148px', transform:'rotate(-5deg)' }}>
+                  <div style={{ position:'absolute', top:'-7px', left:'6px', width:'42px', height:'9px', background:'repeating-linear-gradient(90deg,rgba(107,91,138,0.5) 0px,rgba(107,91,138,0.5) 7px,rgba(80,65,110,0.35) 7px,rgba(80,65,110,0.35) 14px)', borderRadius:'1px', zIndex:2 }}/>
+                  <div style={{ background:'#E8E0F4', padding:'9px 11px 0px', boxShadow:'2px 3px 6px rgba(0,0,0,0.2)', minWidth:'66px' }}>
+                    <p style={{ fontFamily:"serif", fontSize:'16px', color:'#4A3A6A', margin:0, lineHeight:1.3, textAlign:'center' }}>谢谢</p>
+                    <p style={{ fontFamily:"serif", fontSize:'8px', color:'rgba(74,58,106,0.6)', margin:'3px 0 6px', textAlign:'center', fontStyle:'italic' }}>Thank you</p>
+                    <div style={{ height:'8px', background:'linear-gradient(180deg,#E8E0F4,transparent)', clipPath:'polygon(0% 0%,5% 100%,10% 30%,15% 100%,20% 20%,25% 100%,30% 40%,35% 100%,40% 10%,45% 100%,50% 30%,55% 100%,60% 20%,65% 100%,70% 50%,75% 100%,80% 30%,85% 100%,90% 20%,95% 100%,100% 0%)' }}/>
+                  </div>
+                </div>
+
+                {/* STICKY NOTE 5 — 好运 */}
+                <div style={{ position:'absolute', top:'310px', left:'38px', transform:'rotate(-4deg)' }}>
+                  <div style={{ position:'absolute', top:'-7px', left:'8px', width:'40px', height:'9px', background:'repeating-linear-gradient(90deg,rgba(212,175,55,0.55) 0px,rgba(212,175,55,0.55) 8px,rgba(180,140,20,0.4) 8px,rgba(180,140,20,0.4) 16px)', borderRadius:'1px', zIndex:2 }}/>
+                  <div style={{ background:'#FFF5CC', padding:'9px 11px 11px', boxShadow:'2px 3px 6px rgba(0,0,0,0.2)', minWidth:'66px' }}>
+                    <p style={{ fontFamily:"serif", fontSize:'16px', color:'#8A6A00', margin:0, lineHeight:1.3, textAlign:'center' }}>好运</p>
+                    <p style={{ fontFamily:"serif", fontSize:'8px', color:'rgba(138,106,0,0.6)', margin:'3px 0 0', textAlign:'center', fontStyle:'italic' }}>Good luck!</p>
+                  </div>
+                </div>
+
+                {/* 墨书 TAG */}
+                <div style={{ position:'absolute', top:'168px', left:'50px', transform:'rotate(-8deg)' }}>
+                  <svg width="6" height="16" viewBox="0 0 6 16" style={{ display:'block', margin:'0 auto' }}>
+                    <line x1="3" y1="0" x2="3" y2="16" stroke="#8B4513" strokeWidth="1" strokeDasharray="2,2"/>
                   </svg>
-                  <div style={{ background:'#FFF8F0', border:'1.5px solid rgba(139,0,0,0.3)', padding:'5px 10px', borderRadius:'3px', boxShadow:'1px 2px 4px rgba(0,0,0,0.15)', textAlign:'center' }}>
-                    <p style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'13px', color:'#8B0000', margin:0, letterSpacing:'3px' }}>墨书</p>
-                    <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'7px', color:'rgba(139,0,0,0.5)', margin:'2px 0 0', letterSpacing:'1px' }}>INKBOOK</p>
+                  <div style={{ background:'#FFF8F0', border:'1.5px solid rgba(139,0,0,0.35)', padding:'4px 9px', borderRadius:'3px', boxShadow:'1px 2px 4px rgba(0,0,0,0.15)', textAlign:'center' }}>
+                    <p style={{ fontFamily:"serif", fontSize:'12px', color:'#8B0000', margin:0, letterSpacing:'2px' }}>墨书</p>
+                    <p style={{ fontFamily:"serif", fontSize:'6px', color:'rgba(139,0,0,0.5)', margin:'1px 0 0', letterSpacing:'1px' }}>INKBOOK</p>
                   </div>
                 </div>
 
-                {/* CHINESE PATTERN WASHI TAPE STRIP */}
-                <div style={{ position:'absolute', top:'218px', left:0, right:0, height:'16px', background:'repeating-linear-gradient(90deg,rgba(139,0,0,0.18) 0px,rgba(139,0,0,0.18) 2px,transparent 2px,transparent 8px)', transform:'rotate(-1deg)', zIndex:1 }}/>
-                <div style={{ position:'absolute', top:'220px', left:0, right:0, height:'12px', background:'rgba(212,175,55,0.15)', transform:'rotate(-1deg)', zIndex:0 }}/>
+                {/* PRACTICE TICKET */}
+                <div style={{ position:'absolute', top:'275px', left:'130px', transform:'rotate(3deg)' }}>
+                  <div style={{ background:'#FFF8F0', border:'1px dashed rgba(139,0,0,0.3)', padding:'5px 8px', boxShadow:'1px 2px 4px rgba(0,0,0,0.12)' }}>
+                    <p style={{ fontFamily:"serif", fontSize:'6px', color:'rgba(139,0,0,0.5)', margin:'0 0 3px', letterSpacing:'1px', textTransform:'uppercase' }}>Practice</p>
+                    <p style={{ fontFamily:"serif", fontSize:'14px', color:'#3A2A1A', margin:0, letterSpacing:'4px' }}>一二三四五</p>
+                  </div>
+                </div>
 
-                {/* LANTERN FESTIVAL POLAROID — bottom center */}
-                <div style={{ position:'absolute', bottom:'22px', left:'50%', transform:'translateX(-50%) rotate(2deg)', background:'#FFF8F0', padding:'5px 5px 22px 5px', boxShadow:'2px 4px 10px rgba(0,0,0,0.25)', width:'110px', zIndex:3 }}>
-                  {/* Washi tape on polaroid */}
-                  <div style={{ position:'absolute', top:'-6px', left:'28px', width:'48px', height:'10px', background:'repeating-linear-gradient(90deg,rgba(27,75,122,0.5) 0px,rgba(27,75,122,0.5) 8px,rgba(20,55,100,0.35) 8px,rgba(20,55,100,0.35) 16px)', borderRadius:'1px' }}/>
-                  <div style={{ width:'100px', height:'75px', overflow:'hidden' }}>
-                    <svg width="100" height="75" viewBox="0 0 100 75">
-                      <rect x="0" y="0" width="100" height="75" fill="#1A0A2A"/>
-                      {[[18,22,'#CC0000'],[50,16,'#D4AF37'],[82,24,'#CC0000'],[34,46,'#D4849A'],[66,42,'#CC0000']].map(([x,y,c],i) => (
+                {/* PAPER CLIP */}
+                <svg style={{ position:'absolute', top:'72px', left:'200px', pointerEvents:'none', transform:'rotate(-5deg)' }} width="16" height="30" viewBox="0 0 16 30">
+                  <path d="M8,2 C12,2 14,5 14,9 L14,22 C14,26 11,28 8,28 C5,28 2,26 2,22 L2,7 C2,4 4,2 7,2 C10,2 12,4 12,7 L12,22 C12,24 10,25 8,25 C6,25 4,24 4,22 L4,9" fill="none" stroke="#D4AF37" strokeWidth="2" strokeLinecap="round"/>
+                </svg>
+
+                {/* GOLD STARS */}
+                {[[148,52],[200,142],[88,350],[250,308],[170,392]].map(([x,y],i) => (
+                  <svg key={i} style={{ position:'absolute', left:`${x}px`, top:`${y}px`, pointerEvents:'none' }} width="12" height="12" viewBox="0 0 12 12">
+                    <polygon points="6,1 7.5,4.5 11,4.5 8.5,7 9.5,10.5 6,8.5 2.5,10.5 3.5,7 1,4.5 4.5,4.5" fill="#D4AF37" opacity="0.7"/>
+                  </svg>
+                ))}
+
+                {/* WASHI TAPE STRIP */}
+                <div style={{ position:'absolute', top:'210px', left:0, right:0, height:'14px', background:'repeating-linear-gradient(90deg,rgba(139,0,0,0.15) 0px,rgba(139,0,0,0.15) 2px,transparent 2px,transparent 8px)', transform:'rotate(-0.5deg)' }}/>
+                <div style={{ position:'absolute', top:'212px', left:0, right:0, height:'10px', background:'rgba(212,175,55,0.12)', transform:'rotate(-0.5deg)' }}/>
+
+                {/* LANTERN POLAROID */}
+                <div style={{ position:'absolute', bottom:'18px', left:'50%', transform:'translateX(-50%) rotate(2deg)', background:'#FFF8F0', padding:'5px 5px 20px 5px', boxShadow:'2px 4px 10px rgba(0,0,0,0.25)', width:'104px', zIndex:3 }}>
+                  <div style={{ position:'absolute', top:'-6px', left:'26px', width:'46px', height:'9px', background:'repeating-linear-gradient(90deg,rgba(27,75,122,0.5) 0px,rgba(27,75,122,0.5) 8px,rgba(20,55,100,0.35) 8px,rgba(20,55,100,0.35) 16px)', borderRadius:'1px' }}/>
+                  <div style={{ width:'94px', height:'70px', overflow:'hidden' }}>
+                    <svg width="94" height="70" viewBox="0 0 94 70">
+                      <rect x="0" y="0" width="94" height="70" fill="#1A0A2A"/>
+                      {[[18,22,'#CC0000'],[47,16,'#D4AF37'],[76,24,'#CC0000'],[32,44,'#D4849A'],[63,40,'#CC0000']].map(([x,y,c],i) => (
                         <g key={i}>
                           <line x1={x as number} y1={0} x2={x as number} y2={(y as number)-8} stroke="#C4A030" strokeWidth="0.8"/>
                           <ellipse cx={x as number} cy={(y as number)+10} rx="9" ry="13" fill={c as string} opacity="0.9"/>
-                          <ellipse cx={x as number} cy={(y as number)+2} rx="6" ry="4" fill="rgba(255,220,0,0.35)"/>
+                          <ellipse cx={x as number} cy={(y as number)+2} rx="5" ry="3.5" fill="rgba(255,220,0,0.35)"/>
                           <line x1={(x as number)-4} y1={(y as number)+23} x2={(x as number)-3} y2={(y as number)+32} stroke={c as string} strokeWidth="1"/>
                           <line x1={x as number} y1={(y as number)+23} x2={x as number} y2={(y as number)+33} stroke="#D4AF37" strokeWidth="1"/>
                           <line x1={(x as number)+4} y1={(y as number)+23} x2={(x as number)+3} y2={(y as number)+32} stroke={c as string} strokeWidth="1"/>
                         </g>
                       ))}
-                      {[[8,6],[25,4],[55,8],[75,5],[92,12],[4,18],[45,2],[88,20]].map(([x,y],i) => (
+                      {[[8,5],[24,3],[52,7],[72,4],[88,11],[3,16],[44,2]].map(([x,y],i) => (
                         <circle key={i} cx={x} cy={y} r="1" fill="white" opacity="0.7"/>
                       ))}
                     </svg>
                   </div>
-                  <p style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'8px', color:'#5A3A1A', textAlign:'center', margin:'5px 0 0', letterSpacing:'1px' }}>灯节</p>
+                  <p style={{ fontFamily:"serif", fontSize:'7px', color:'#5A3A1A', textAlign:'center', margin:'4px 0 0', letterSpacing:'1px' }}>灯节</p>
                 </div>
 
               </div>
