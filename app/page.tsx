@@ -78,13 +78,17 @@ export default function InkBookHome() {
         input:focus { outline: none; }
         input::placeholder { color: rgba(90,58,26,0.35); font-style:italic; font-size:11px; font-family:'Playfair Display',serif; }
 
-        /* MOBILE — hide left journal page, scale book to fit screen */
+        /* MOBILE */
         @media (max-width: 600px) {
+          .book-wrap { transform: none !important; }
           .book-inner-page { display: none !important; }
-          .book-cover { transform-origin: right center !important; }
-          .book-wrap { transform: scale(0.88) !important; transform-origin: top center !important; }
-          .chain-left { display: none !important; }
-          .bottom-charm { transform: scale(0.8) !important; transform-origin: top center !important; }
+          .mobile-cover { display: block !important; }
+          .mobile-form { display: flex !important; }
+          .desktop-only { display: none !important; }
+        }
+        @media (min-width: 601px) {
+          .mobile-cover { display: none !important; }
+          .mobile-form { display: none !important; }
         }
       `}</style>
 
@@ -847,11 +851,108 @@ export default function InkBookHome() {
           </div>{/* end book div */}
         </div>{/* end book wrapper */}
 
-        <p style={{ marginTop:'70px', fontFamily:"'Playfair Display',serif", fontSize:'11px', color:'rgba(139,0,0,0.45)', fontStyle:'italic', letterSpacing:'1px', textAlign:'center' }}>
+        <p className="desktop-only" style={{ marginTop:'70px', fontFamily:"'Playfair Display',serif", fontSize:'11px', color:'rgba(139,0,0,0.45)', fontStyle:'italic', letterSpacing:'1px', textAlign:'center' }}>
           {isOpen ? 'tap to close · begin your journey' : 'tap to open · tap again to close'}
         </p>
 
       </div>
+
+      {/* MOBILE — Cover shown first, tap reveals name generator */}
+
+      {/* Mobile cover — full screen, tap to reveal form */}
+      {!isOpen && (
+        <div className="mobile-cover" style={{ display:'none', position:'fixed', inset:0, zIndex:100, cursor:'pointer' }} onClick={toggleBook}>
+          <div style={{ width:'100%', height:'100%', background:'linear-gradient(145deg,#F2C4CE,#E8A0B8,#D4849A)', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:'40px 24px' }}>
+            {/* Washi tapes */}
+            <div style={{ position:'absolute', top:'60px', left:0, right:0, height:'22px', background:'repeating-linear-gradient(90deg,rgba(212,175,55,0.6) 0px,rgba(212,175,55,0.6) 14px,rgba(180,140,20,0.45) 14px,rgba(180,140,20,0.45) 28px)', transform:'rotate(-1deg)' }}/>
+            <div style={{ position:'absolute', top:'240px', left:0, right:0, height:'18px', background:'repeating-linear-gradient(90deg,rgba(139,0,0,0.5) 0px,rgba(139,0,0,0.5) 10px,rgba(180,0,0,0.35) 10px,rgba(180,0,0,0.35) 20px)', transform:'rotate(0.5deg)' }}/>
+
+            {/* Title */}
+            <div style={{ textAlign:'center', zIndex:2, marginBottom:'24px' }}>
+              <div style={{ display:'flex', gap:'6px', justifyContent:'center', marginBottom:'8px' }}>
+                {[{ch:'墨',bg:'#F2C4CE'},{ch:'书',bg:'#FAD4A6'}].map(({ch,bg},i) => (
+                  <span key={i} style={{ fontFamily:"'Noto Serif SC',serif", fontWeight:700, fontSize:'36px', padding:'4px 8px', background:bg, borderRadius:'2px', boxShadow:'1px 1px 3px rgba(0,0,0,0.2)', color:'#1A1A1A' }}>{ch}</span>
+                ))}
+              </div>
+              <div style={{ display:'flex', gap:'4px', justifyContent:'center', marginBottom:'6px' }}>
+                {[{ch:'I',bg:'#F4A7B9',r:-3},{ch:'N',bg:'#FAD4A6',r:2},{ch:'K',bg:'#F2C4CE',r:-1}].map(({ch,bg,r},i) => (
+                  <span key={i} style={{ fontFamily:"'Playfair Display',serif", fontWeight:700, fontSize:'48px', padding:'4px 6px', background:bg, borderRadius:'2px', boxShadow:'1px 1px 3px rgba(0,0,0,0.2)', transform:`rotate(${r}deg)`, color:'#1A1A1A' }}>{ch}</span>
+                ))}
+              </div>
+              <div style={{ display:'flex', gap:'4px', justifyContent:'center' }}>
+                {[{ch:'B',bg:'#CC0000',c:'#FAD4A6',r:2},{ch:'O',bg:'#D4AF37',c:'#1A1A1A',r:-2},{ch:'O',bg:'#2D5016',c:'#FAD4A6',r:3},{ch:'K',bg:'#1B4B7A',c:'#FAD4A6',r:-1}].map(({ch,bg,c,r},i) => (
+                  <span key={i} style={{ fontFamily:"'Playfair Display',serif", fontWeight:700, fontSize:'38px', padding:'4px 6px', background:bg, borderRadius:'2px', boxShadow:'1px 1px 3px rgba(0,0,0,0.2)', transform:`rotate(${r}deg)`, color:c }}>{ch}</span>
+                ))}
+              </div>
+            </div>
+
+            {/* Flowers row */}
+            <div style={{ display:'flex', gap:'16px', justifyContent:'center', zIndex:2, marginBottom:'32px' }}>
+              <svg width="48" height="48" viewBox="0 0 52 52">
+                {[0,45,90,135,180,225,270,315].map((r,i) => <ellipse key={i} cx="26" cy="9" rx="7" ry="11" fill={i%2===0?'#E8869A':'#F4A7B9'} transform={`rotate(${r},26,26)`} opacity="0.9"/>)}
+                <circle cx="26" cy="26" r="8" fill="#FFD700" opacity="0.85"/>
+              </svg>
+              <svg width="48" height="48" viewBox="0 0 42 42">
+                {[{cx:21,cy:9},{cx:33,cy:17},{cx:31,cy:31},{cx:11,cy:33},{cx:9,cy:17}].map((p,i) => <circle key={i} cx={p.cx} cy={p.cy} r="8" fill={i%2===0?'#F2C4CE':'#EDA8BC'} opacity="0.9"/>)}
+                <circle cx="21" cy="21" r="6" fill="#FFD700" opacity="0.85"/>
+              </svg>
+              <svg width="48" height="48" viewBox="0 0 34 34">
+                {[{cx:17,cy:7},{cx:27,cy:13},{cx:25,cy:25},{cx:9,cy:25},{cx:7,cy:13}].map((p,i) => <circle key={i} cx={p.cx} cy={p.cy} r="6" fill={i%2===0?'#F9D0DC':'#F4B8C8'} opacity="0.9"/>)}
+                <circle cx="17" cy="17" r="5" fill="#FFD700" opacity="0.8"/>
+              </svg>
+            </div>
+
+            <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'13px', color:'rgba(90,40,20,0.7)', fontStyle:'italic', letterSpacing:'1px', zIndex:2 }}>tap to open your journal</p>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile name generator — shown after tapping cover */}
+      {isOpen && (
+        <div className="mobile-form" style={{ display:'none', position:'fixed', inset:0, zIndex:100, flexDirection:'column', alignItems:'center', justifyContent:'center', background:'#FFF8F0', backgroundImage:'repeating-linear-gradient(0deg,transparent,transparent 27px,rgba(139,0,0,0.06) 27px,rgba(139,0,0,0.06) 28px)', padding:'40px 24px 60px', overflowY:'auto' }}>
+
+          {/* Logo */}
+          <div style={{ textAlign:'center', marginBottom:'24px' }}>
+            <span style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'28px', color:'#8B0000', letterSpacing:'6px', display:'block' }}>墨 书</span>
+            <span style={{ fontFamily:"'Playfair Display',serif", fontSize:'11px', color:'rgba(139,0,0,0.45)', letterSpacing:'3px', display:'block', marginTop:'3px' }}>I N K B O O K</span>
+          </div>
+
+          {/* Journal card */}
+          <div style={{ width:'100%', maxWidth:'360px', background:'#F5E8C8', borderRadius:'12px', padding:'28px 24px', boxShadow:'0 8px 32px rgba(60,30,10,0.18)', backgroundImage:'repeating-linear-gradient(0deg,transparent,transparent 22px,rgba(139,0,0,0.06) 22px,rgba(139,0,0,0.06) 23px)' }}>
+            <p style={{ fontFamily:"'Playfair Display',serif", fontSize:'14px', color:'#5A3A1A', textAlign:'center', lineHeight:1.7, marginBottom:'20px', fontStyle:'italic' }}>Every language journey<br/>begins with a name.</p>
+
+            {result && (
+              <div className="result-fade" style={{ textAlign:'center', marginBottom:'16px' }}>
+                <div style={{ fontFamily:"'Noto Serif SC',serif", fontSize:'36px', color:'#8B0000', letterSpacing:'4px', marginBottom:'4px' }}>{result.chinese}</div>
+                <div style={{ fontFamily:"'Playfair Display',serif", fontSize:'13px', color:'rgba(139,0,0,0.6)', fontStyle:'italic', marginBottom:'4px' }}>{result.pinyin}</div>
+                <div style={{ fontFamily:"'Playfair Display',serif", fontSize:'12px', color:'rgba(90,58,26,0.7)', fontStyle:'italic' }}>{result.meaning}</div>
+              </div>
+            )}
+
+            <input
+              value={nameInput}
+              onChange={e => setNameInput(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && generateName()}
+              placeholder="enter your name here..."
+              style={{ width:'100%', background:'transparent', border:'none', borderBottom:'1px solid rgba(90,58,26,0.35)', padding:'8px 4px', fontFamily:"'Playfair Display',serif", fontSize:'14px', color:'#3A2010', textAlign:'center', marginBottom:'16px' }}
+            />
+
+            <button onClick={generateName} style={{ background:'#8B0000', color:'#F5E8C8', border:'none', padding:'12px 16px', fontFamily:"'Playfair Display',serif", fontSize:'11px', letterSpacing:'1.5px', cursor:'pointer', width:'100%', borderRadius:'4px' }}>
+              {isLoading ? '✦ WRITING YOUR NAME... ✦' : '✦ GENERATE MY CHINESE NAME ✦'}
+            </button>
+
+            {result && (
+              <button onClick={() => router.push(`/learn?name=${encodeURIComponent(result.chinese)}&english=${encodeURIComponent(nameInput)}`)} style={{ background:'#D4AF37', color:'#3A2010', border:'none', padding:'12px 16px', fontFamily:"'Playfair Display',serif", fontSize:'11px', letterSpacing:'1.5px', cursor:'pointer', width:'100%', marginTop:'10px', fontWeight:700, borderRadius:'4px' }}>
+                🖌️ Enter the Study Hall →
+              </button>
+            )}
+          </div>
+
+          <button onClick={toggleBook} style={{ marginTop:'20px', background:'none', border:'none', fontFamily:"'Playfair Display',serif", fontSize:'12px', color:'rgba(139,0,0,0.4)', fontStyle:'italic', cursor:'pointer' }}>
+            ← back to cover
+          </button>
+        </div>
+      )}
     </>
   );
 }
