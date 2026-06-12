@@ -78,18 +78,22 @@ export default function InkBookHome() {
         input:focus { outline: none; }
         input::placeholder { color: rgba(90,58,26,0.35); font-style:italic; font-size:11px; font-family:'Playfair Display',serif; }
 
-        /* MOBILE */
+       /* MOBILE */
         @media (max-width: 600px) {
-          .book-wrap { transform: none !important; }
           .book-inner-page { display: none !important; }
-          .mobile-cover { display: block !important; }
-          .mobile-form { display: flex !important; }
-          .desktop-only { display: none !important; }
+          .mobile-cover { display: none !important; }
+          .mobile-form { display: none !important; }
+          .book-wrap { 
+            transform: scale(0.72) !important; 
+            transform-origin: top center !important;
+            margin-bottom: -120px !important;
+          }
         }
         @media (min-width: 601px) {
           .mobile-cover { display: none !important; }
           .mobile-form { display: none !important; }
         }
+        
       `}</style>
 
       <div style={{ width:'100%', minHeight:'100vh', background:'#FFF8F0', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:'60px 20px 80px', backgroundImage:'repeating-linear-gradient(0deg,transparent,transparent 27px,rgba(139,0,0,0.06) 27px,rgba(139,0,0,0.06) 28px)' }}>
