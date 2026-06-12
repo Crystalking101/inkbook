@@ -77,6 +77,15 @@ export default function InkBookHome() {
         .result-fade { animation: fadeIn 0.5s ease forwards; }
         input:focus { outline: none; }
         input::placeholder { color: rgba(90,58,26,0.35); font-style:italic; font-size:11px; font-family:'Playfair Display',serif; }
+
+        /* MOBILE — hide left journal page, scale book to fit screen */
+        @media (max-width: 600px) {
+          .book-inner-page { display: none !important; }
+          .book-cover { transform-origin: right center !important; }
+          .book-wrap { transform: scale(0.88) !important; transform-origin: top center !important; }
+          .chain-left { display: none !important; }
+          .bottom-charm { transform: scale(0.8) !important; transform-origin: top center !important; }
+        }
       `}</style>
 
       <div style={{ width:'100%', minHeight:'100vh', background:'#FFF8F0', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:'60px 20px 80px', backgroundImage:'repeating-linear-gradient(0deg,transparent,transparent 27px,rgba(139,0,0,0.06) 27px,rgba(139,0,0,0.06) 28px)' }}>
@@ -88,7 +97,7 @@ export default function InkBookHome() {
         </div>
 
         {/* BOOK WRAPPER — no paddingLeft needed anymore */}
-        <div style={{ position:'relative', paddingBottom:'70px' }}>
+        <div className="book-wrap" style={{ position:'relative', paddingBottom:'70px' }}>
 
           {/* BOOK */}
           <div style={{ position:'relative', width:'340px', height:'420px', perspective:'1200px' }}>
@@ -284,7 +293,7 @@ export default function InkBookHome() {
             <div style={{ position:'absolute', top:'-2px', right:'65px', width:'6px', height:'22px', background:'linear-gradient(180deg,#F4A7B9,#D4849A)', opacity:0.6, borderRadius:'0 0 3px 3px', zIndex:15 }}/>
 
             {/* INNER PAGE */}
-            <div style={{ position:'absolute', left:0, top:0, width:'340px', height:'420px', background:'#F5E8C8', borderRadius:'3px 6px 6px 3px', overflow:'hidden', zIndex:2 }}>
+            <div className="book-inner-page" style={{ position:'absolute', left:0, top:0, width:'340px', height:'420px', background:'#F5E8C8', borderRadius:'3px 6px 6px 3px', overflow:'hidden', zIndex:2 }}>
               <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse at 15% 15%,rgba(180,130,60,0.1) 0%,transparent 50%),radial-gradient(#F5E8C8,#EDD9A8)' }}/>
               <div style={{ position:'absolute', top:0, left:0, right:0, height:'14px', background:'linear-gradient(180deg,rgba(80,45,10,0.3) 0%,transparent 100%)', clipPath:'polygon(0% 0%,7% 100%,14% 35%,21% 100%,29% 20%,37% 100%,44% 50%,51% 100%,59% 25%,66% 100%,74% 40%,81% 100%,89% 30%,95% 100%,100% 0%)' }}/>
               <div style={{ position:'absolute', top:'22px', right:'14px', width:'32px', height:'32px', border:'1.5px solid rgba(139,0,0,0.22)', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'Noto Serif SC',serif", fontSize:'13px', color:'rgba(139,0,0,0.28)', transform:'rotate(-12deg)' }}>墨</div>
