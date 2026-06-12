@@ -352,7 +352,7 @@ function ToneIntroContent() {
 
         {/* Ransom title */}
         <div style={{ animation: "fadeUp 0.6s ease-out 0.1s both", marginBottom: "10px" }}>
-          <RansomTitle text={`${['1ST','2ND','3RD','4TH','5TH'][dynasty.toneNumber - 1]} TONE`} dynasty={dynasty} />
+          <RansomTitle text={`THE ${dynasty.toneName.toUpperCase()}`} dynasty={dynasty} />
         </div>
 
         {/* Tone mark large */}
