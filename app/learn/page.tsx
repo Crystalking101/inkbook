@@ -58,7 +58,7 @@ const MODULES = [
     route: "/pronouns",
     color: "#C41E1E",
     deepColor: "#8B0000",
-    built: false,
+    built: true,
   },
   {
     id: "verbs",
@@ -69,7 +69,7 @@ const MODULES = [
     route: "/verbs",
     color: "#D4A832",
     deepColor: "#8A6A14",
-    built: false,
+    built: true,
   },
   {
     id: "questions",
@@ -80,7 +80,7 @@ const MODULES = [
     route: "/questions",
     color: "#B8A9C9",
     deepColor: "#6B5B8A",
-    built: false,
+    built: true,
   },
 ];
 
@@ -124,7 +124,6 @@ function LearnContent() {
         .module-card-built:hover { box-shadow: 0 8px 24px rgba(60,30,10,0.18) !important; }
       `}</style>
 
-      {/* Decorative doodles */}
       <svg style={{ position:"absolute", top:"10px", left:"10px", pointerEvents:"none" }} width="100" height="140" viewBox="0 0 100 140" opacity="0.4">
         <path d="M10,55 L10,35 L22,45 L32,25 L42,45 L52,25 L62,45 L72,35 L72,55 Z" fill="none" stroke="#8B0000" strokeWidth="1.5" strokeLinejoin="round"/>
         <line x1="10" y1="55" x2="72" y2="55" stroke="#8B0000" strokeWidth="1.5"/>
@@ -147,7 +146,6 @@ function LearnContent() {
         ))}
       </svg>
 
-      {/* Palace silhouette */}
       <svg style={{ position:"absolute", bottom:0, left:"50%", transform:"translateX(-50%)", pointerEvents:"none" }} width="600" height="70" viewBox="0 0 600 70" opacity="0.06">
         <path d="M200,70 L200,35 Q300,12 400,35 L400,70Z" fill="#8B0000"/>
         <path d="M100,70 L100,45 Q150,28 200,45 L200,70Z" fill="#8B0000"/>
@@ -158,38 +156,34 @@ function LearnContent() {
       </svg>
 
       <div style={{ maxWidth:"600px", margin:"0 auto", position:"relative" }}>
-
-        {/* Header */}
         <div style={{ textAlign:"center", marginBottom:"32px", animation:"fadeUp 0.5s ease both" }}>
           {chineseName && (
-  <div style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", gap:"4px", marginBottom:"12px" }}>
-    {chineseName.split("").map((ch, i) => {
-      const colors = [
-        { bg:"#8B0000", c:"#FFF8F0" },
-        { bg:"#D4849A", c:"#FFF8F0" },
-        { bg:"#E8E4B8", c:"#5A3A1A" },
-        { bg:"#7BA888", c:"#FFF8F0" },
-      ];
-      const s = colors[i % colors.length];
-      return (
-        <span key={i} style={{
-          display:"inline-flex", alignItems:"center", justifyContent:"center",
-          fontFamily:"'Noto Serif SC',serif", fontWeight:700,
-          fontSize:"clamp(28px,7vw,44px)",
-          padding:"3px 10px",
-          background: s.bg, color: s.c,
-          transform:`rotate(${i%2===0?-2:2}deg)`,
-          boxShadow:"2px 3px 0 rgba(60,30,10,0.18)",
-          borderRadius:"2px",
-        }}>{ch}</span>
-      );
-    })}
-    {englishName && <p style={{ width:"100%", textAlign:"center", fontFamily:"'Playfair Display',serif", fontSize:"13px", color:"rgba(139,0,0,0.5)", letterSpacing:"3px", marginTop:"6px" }}>{englishName}</p>}
-  </div>
-)}
-            
+            <div style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", gap:"4px", marginBottom:"12px" }}>
+              {chineseName.split("").map((ch, i) => {
+                const colors = [
+                  { bg:"#8B0000", c:"#FFF8F0" },
+                  { bg:"#D4849A", c:"#FFF8F0" },
+                  { bg:"#E8E4B8", c:"#5A3A1A" },
+                  { bg:"#7BA888", c:"#FFF8F0" },
+                ];
+                const s = colors[i % colors.length];
+                return (
+                  <span key={i} style={{
+                    display:"inline-flex", alignItems:"center", justifyContent:"center",
+                    fontFamily:"'Noto Serif SC',serif", fontWeight:700,
+                    fontSize:"clamp(28px,7vw,44px)",
+                    padding:"3px 10px",
+                    background: s.bg, color: s.c,
+                    transform:`rotate(${i%2===0?-2:2}deg)`,
+                    boxShadow:"2px 3px 0 rgba(60,30,10,0.18)",
+                    borderRadius:"2px",
+                  }}>{ch}</span>
+                );
+              })}
+              {englishName && <p style={{ width:"100%", textAlign:"center", fontFamily:"'Playfair Display',serif", fontSize:"13px", color:"rgba(139,0,0,0.5)", letterSpacing:"3px", marginTop:"6px" }}>{englishName}</p>}
+            </div>
+          )}
 
-          {/* Ransom title */}
           <div style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", gap:"5px", marginBottom:"12px" }}>
             {["Y","O","U","R"," ","J","O","U","R","N","E","Y"].map((ch, i) => {
               const colors = [
@@ -221,7 +215,6 @@ function LearnContent() {
             Each module brings you closer to fluency. Begin anywhere.
           </p>
 
-          {/* Progress bar */}
           <div style={{ marginTop:"16px", background:"rgba(139,0,0,0.08)", borderRadius:"999px", height:"8px", maxWidth:"300px", margin:"16px auto 0" }}>
             <div style={{
               height:"8px", borderRadius:"999px",
@@ -235,7 +228,6 @@ function LearnContent() {
           </p>
         </div>
 
-        {/* Module cards */}
         <div style={{ display:"flex", flexDirection:"column", gap:"14px" }}>
           {MODULES.map((mod, i) => (
             <div
@@ -258,7 +250,6 @@ function LearnContent() {
                 position:"relative",
               }}
             >
-              {/* Icon */}
               <div style={{
                 width:"54px", height:"54px", borderRadius:"12px",
                 background: mod.built ? mod.color : "rgba(139,0,0,0.06)",
@@ -274,17 +265,14 @@ function LearnContent() {
                 }}>{mod.icon}</span>
               </div>
 
-              {/* Text */}
               <div style={{ flex:1, minWidth:0 }}>
                 <div style={{ display:"flex", alignItems:"center", gap:"8px", marginBottom:"3px" }}>
                   <span style={{ fontFamily:"'Noto Serif SC',serif", fontSize:"13px", color: mod.built ? mod.deepColor : "rgba(139,0,0,0.3)" }}>{mod.chinese}</span>
-                  {!mod.built && <span style={{ fontSize:"11px", background:"rgba(139,0,0,0.08)", color:"rgba(139,0,0,0.4)", padding:"1px 8px", borderRadius:"999px", letterSpacing:"0.05em" }}>Coming Soon</span>}
                 </div>
                 <p style={{ fontFamily:"'Playfair Display',serif", fontWeight:700, fontSize:"16px", color: mod.built ? "#3A2A1A" : "rgba(60,40,20,0.35)", margin:"0 0 3px" }}>{mod.title}</p>
                 <p style={{ fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontSize:"13px", color: mod.built ? "#6B5B3E" : "rgba(107,91,62,0.4)", margin:0 }}>{mod.description}</p>
               </div>
 
-              {/* Right side — checkmark or arrow or lock */}
               <div style={{ flexShrink:0 }}>
                 {completed[mod.id] ? (
                   <div style={{
@@ -304,7 +292,6 @@ function LearnContent() {
           ))}
         </div>
 
-        {/* Back to book */}
         <div style={{ textAlign:"center", marginTop:"32px" }}>
           <button
             onClick={() => router.push("/")}
@@ -318,7 +305,6 @@ function LearnContent() {
             ← Back to the book cover
           </button>
         </div>
-
       </div>
     </main>
   );
